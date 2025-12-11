@@ -1,0 +1,1243 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Rescatando🐶🐱</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+
+  <style>
+    
+    body {
+      font-family: 'Chewy', cursive;
+      margin: 0;
+      padding: 0;
+      background-image: url('/media/animales/fondo.jpg');
+      background-size: 120px;
+      background-repeat: repeat;
+      font-size: 1.15rem;
+    }
+
+    .navbar, .footer {
+      background-color: #009688;
+      padding: 1rem 0;
+    }
+
+    .navbar .nav-link,
+    .navbar-brand {
+      color: #ffffff !important;
+      font-size: 1.3rem;
+    }
+
+    .header-cover {
+      position: relative;
+      background: linear-gradient(to top right, #00bfa5, #80deea);
+      padding: 4rem 1rem 6rem;
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .header-cover::before {
+      content: "";
+      background: url('/media/animales/header.jpg.webp') center 30% / cover no-repeat;
+      opacity: 0.25;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .header-logo {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+      border-radius: 50%;
+      z-index: 2;
+    }
+
+    .header-text {
+      position: relative;
+      z-index: 2;
+    }
+
+    .header-text h1 {
+      font-size: 4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .header-text .slogan {
+      background-color: rgba(255, 255, 255, 0.85);
+      color: #009688;
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      display: inline-block;
+      font-size: 1.8rem;
+      margin-top: 1rem;
+    }
+
+    .icon-strip {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      padding: 0.5rem 0;
+      position: relative;
+      z-index: 3;
+    }
+
+    .icon-strip i {
+      color: #ff4081;
+      font-size: 2rem;
+      margin: 0 0.5rem;
+      animation: float 3s infinite ease-in-out;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .wave-divider {
+      display: block;
+      background-color: transparent;
+      line-height: 0;
+      margin-bottom: -1px;
+    }
+
+    .wave-divider svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .animal-section {
+      position: relative;
+      padding: 3rem 0;
+      margin: 0;
+    }
+
+    .animal-section::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(255,255,255,0.6);
+      z-index: 1;
+    }
+
+    .animal-section > .container {
+      position: relative;
+      z-index: 2;
+    }
+
+    .animal-section h2 {
+      background-color: rgba(255,255,255,0.85);
+      display: inline-block;
+      padding: 0.5rem 1rem;
+      border-radius: 1rem;
+      color: #00796b;
+      margin-bottom: 2rem;
+      font-size: 2.5rem;
+    }
+
+    .animal-card {
+      background-color: #e0f7fa;
+      border-radius: 1rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 2rem;
+      transition: transform 0.3s ease;
+      margin-bottom: 2rem;
+      font-size: 1.2rem;
+    }
+
+    .animal-card:hover {
+      transform: scale(1.03);
+    }
+
+    .animal-img-wrapper {
+      position: relative;
+      width: 100%;
+      padding-top: 66.66%;
+      border-radius: 1rem;
+      overflow: hidden;
+    }
+
+    .animal-img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .animal-name {
+      font-size: 2.2rem;
+      font-weight: bold;
+    }
+
+    .paw-icon {
+      color: #00796b;
+      margin-right: 0.4rem;
+    }
+
+    .footer {
+      color: white;
+      text-align: center;
+      padding: 1rem 0;
+    }
+
+    .social-icons {
+      margin-top: 1rem;
+    }
+
+    .social-icons a {
+      color: #ffffff;
+      font-size: 1.5rem;
+      margin: 0 0.5rem;
+      transition: color 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      color: #ffd54f;
+    }
+
+    /* Animaciones de scroll */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .fade-up.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Sección Cómo ayudar */
+    .help-section {
+      padding: 4rem 0;
+      background-color: rgba(255, 255, 255, 0.7);
+    }
+
+    .help-section h2 {
+      color: #00796b;
+      margin-bottom: 2rem;
+      font-size: 2.5rem;
+    }
+
+    .help-card {
+      background-color: #fff8e1;
+      border-radius: 1rem;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      font-size: 1.4rem;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .help-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+    }
+
+    .help-card i {
+      font-size: 3.5rem;
+      color: #ff9800;
+      margin-bottom: 1rem;
+    }
+
+    .help-card h4 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    .help-card p {
+      font-size: 1.15rem;
+      color: #555;
+      line-height: 1.6;
+    }
+
+    /* Responsividad para dispositivos pequeños */
+    @media (max-width: 576px) {
+      .help-card {
+        padding: 1.5rem 1rem;
+      }
+
+      .help-card i {
+        font-size: 3rem;
+      }
+
+      .help-card h4 {
+        font-size: 1.5rem;
+      }
+
+      .help-card p {
+        font-size: 1rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .help-card {
+        padding: 1.75rem 1.25rem;
+      }
+
+      .help-card p {
+        font-size: 1.1rem;
+      }
+    }
+
+    /* Modal de información médica */
+    .modal-medical {
+      font-family: 'Chewy', cursive;
+    }
+
+    .modal-medical .modal-header {
+      background: linear-gradient(135deg, #00bfa5, #80deea);
+      color: white;
+      border-radius: 18px 18px 0 0;
+    }
+
+    .modal-medical .modal-body {
+      background-color: #f9f9f9;
+      padding: 2rem;
+    }
+
+    .medical-info-section {
+      background-color: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .medical-info-section h5 {
+      color: #00796b;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #b2dfdb;
+      padding-bottom: 0.5rem;
+      font-size: 1.6rem;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      font-size: 1.35rem;
+    }
+
+    .info-item i {
+      color: #009688;
+      margin-right: 0.8rem;
+      width: 20px;
+    }
+
+    .info-item strong {
+      color: #00796b;
+      margin-right: 0.5rem;
+    }
+
+    .badge-status {
+      display: inline-block;
+      padding: 0.4rem 0.8rem;
+      border-radius: 20px;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    .badge-si {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    .badge-no {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .badge-proceso {
+      background-color: #ff9800;
+      color: white;
+    }
+
+    /* Carrusel de animales */
+    .animal-carousel-container {
+      position: relative;
+      overflow: hidden;
+      margin-top: 2rem;
+      padding: 0 60px;
+    }
+
+    .animal-carousel {
+      display: flex;
+      gap: 2rem;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      padding-bottom: 1rem;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .animal-carousel::-webkit-scrollbar {
+      display: none;
+    }
+
+    .carousel-control {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: linear-gradient(135deg, #ff4081, #ff9800);
+      color: white;
+      border: none;
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      cursor: pointer;
+      z-index: 10;
+      font-size: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(255, 64, 129, 0.5);
+      animation: pulse-arrow 2s infinite;
+    }
+
+    @keyframes pulse-arrow {
+      0%, 100% {
+        box-shadow: 0 6px 20px rgba(255, 64, 129, 0.5);
+        transform: translateY(-50%) scale(1);
+      }
+      50% {
+        box-shadow: 0 8px 30px rgba(255, 64, 129, 0.8);
+        transform: translateY(-50%) scale(1.1);
+      }
+    }
+
+    .carousel-control:hover {
+      background: linear-gradient(135deg, #f50057, #ff6f00);
+      transform: translateY(-50%) scale(1.15);
+      box-shadow: 0 8px 30px rgba(255, 64, 129, 0.8);
+      animation: none;
+    }
+
+    .carousel-control-prev {
+      left: 0;
+    }
+
+    .carousel-control-next {
+      right: 0;
+    }
+
+    .animal-carousel .animal-card {
+      min-width: 420px;
+      flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) {
+      .animal-carousel .animal-card {
+        min-width: 280px;
+      }
+      
+      .carousel-control {
+        width: 50px;
+        height: 50px;
+        font-size: 1.5rem;
+      }
+      
+      .animal-carousel-container {
+        padding: 0 40px;
+      }
+    }
+
+    /* Botón ver más info */
+    .btn-info-medical {
+      background-color: #00bcd4;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.5rem;
+      border-radius: 8px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      margin-top: 0.5rem;
+    }
+
+    .btn-info-medical:hover {
+      background-color: #0097a7;
+      transform: scale(1.05);
+    }
+
+    /* Botón flotante de WhatsApp */
+    .whatsapp-float {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      bottom: 30px;
+      right: 30px;
+      background-color: #25d366;
+      color: #fff;
+      border-radius: 50px;
+      text-align: center;
+      font-size: 30px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .whatsapp-float:hover {
+      background-color: #128c7e;
+      transform: scale(1.1);
+      box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.4);
+      color: #fff;
+    }
+
+    .whatsapp-float i {
+      margin: 0;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+ <!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg">
+  <div class="container">
+    <a class="navbar-brand" href="{% url 'index' %}">RescatandoAndo🦴🐾</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="{% url 'ayudar' %}">Cómo Ayudar</a></li>
+        <li class="nav-item"><a class="nav-link" href="#nosotros">Acerca de Nosotros</a></li>
+        <li class="nav-item"><a class="nav-link" href="#adopta">Animales</a></li>
+        
+        {% if request.session.usuario_id %}
+          <!-- Usuario autenticado -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <span style="font-size: 1.5rem;">
+                {% if request.session.usuario_avatar == 'perro' %}🐕
+                {% elif request.session.usuario_avatar == 'gato' %}🐱
+                {% elif request.session.usuario_avatar == 'pajaro' %}🦜
+                {% elif request.session.usuario_avatar == 'chanchito' %}🐷
+                {% elif request.session.usuario_avatar == 'rata' %}🐭
+                {% elif request.session.usuario_avatar == 'caballo' %}🐴
+                {% elif request.session.usuario_avatar == 'conejo' %}🐰
+                {% elif request.session.usuario_avatar == 'tortuga' %}🐢
+                {% elif request.session.usuario_avatar == 'vaca' %}🐮
+                {% elif request.session.usuario_avatar == 'dinosaurio' %}🦖
+                {% else %}🐕
+                {% endif %}
+              </span>
+              {{ request.session.usuario_nombre }}
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <li><a class="dropdown-item" href="{% url 'perfil' %}"><i class="fas fa-user"></i> Mi Perfil</a></li>
+              {% if request.session.usuario_rol != 'admin' %}
+                <li><a class="dropdown-item" href="{% url 'mis_adopciones' %}"><i class="fas fa-heart"></i> Mis Adopciones</a></li>
+              {% endif %}
+              {% if request.session.usuario_rol == 'admin' or request.session.usuario_rol == 'voluntario' %}
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'gestionar_animales' %}"><i class="fas fa-plus"></i> Gestionar Animales</a></li>
+                <li><a class="dropdown-item" href="{% url 'ver_solicitudes' %}"><i class="fas fa-list"></i> Ver Solicitudes</a></li>
+              {% endif %}
+              {% if request.session.usuario_rol == 'admin' %}
+                <li><a class="dropdown-item" href="{% url 'gestionar_usuarios' %}"><i class="fas fa-users-cog"></i> Gestionar Usuarios</a></li>
+              {% endif %}
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+            </ul>
+          </li>
+        {% else %}
+          <!-- Usuario no autenticado -->
+          <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><i class="fas fa-user-circle"></i> Ingresar/Registrarse</a></li>
+        {% endif %}
+        
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.instagram.com/rescatandoando_stgo" target="_blank" rel="noopener noreferrer">Contacto</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+  <!-- HEADER -->
+  <header class="header-cover">
+    <img src="/media/animales/logo.jpg" alt="Logo del refugio" class="header-logo" />
+    <div class="icon-strip">
+      <i class="fas fa-paw"></i><i class="fas fa-heart"></i><i class="fas fa-bone"></i>
+      <i class="fas fa-cat"></i><i class="fas fa-dog"></i><i class="fas fa-heart"></i>
+    </div>
+    <div class="header-text">
+      <h1>Bienvenidos a RescatandoAndo Stgo💕</h1>
+      <p class="slogan">Un hogar temporal, un amor para siempre 🐶🐱</p>
+    </div>
+  </header>
+
+  <!-- ONDA -->
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 60"><path fill="#ffffff" d="M0,32L48,42.7C96,53,192,75,288,74.7C384,75,480,53,576,42.7C672,32,768,32,864,42.7C960,53,1056,75,1152,74.7C1248,75,1344,53,1392,42.7L1440,32L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg>
+  </div>
+
+<!-- ACERCA DE NOSOTROS -->
+<section id="nosotros" class="animal-section" style="padding: 4rem 0;">
+  <div class="container">
+    <div class="text-center mb-4">
+      <h2 style="background-color: rgba(255,255,255,0.9); display: inline-block; padding: 0.8rem 2rem; border-radius: 1rem; color: #00796b; font-size: 2rem;">
+        🐾 Acerca de Nosotros 🐾
+      </h2>
+    </div>
+    <div class="row align-items-center">
+      <div class="col-md-6 fade-up">
+        <div style="background-color: rgba(255,255,255,0.9); padding: 2rem; border-radius: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+          <h3 style="color: #00796b; margin-bottom: 1rem;">Nuestra Misión 💕</h3>
+          <p style="font-size: 1.1rem; line-height: 1.8;">
+            Somos una organización sin fines de lucro dedicada al rescate, rehabilitación y adopción de perros y gatos en situación de calle o abandono. 
+            Nuestra misión es darles una segunda oportunidad y encontrarles un hogar lleno de amor.
+          </p>
+        </div>
+      </div>
+      <div class="col-md-6 fade-up">
+        <div style="background-color: rgba(255,255,255,0.9); padding: 2rem; border-radius: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+          <h3 style="color: #00796b; margin-bottom: 1rem;">¿Qué Hacemos? 🏡</h3>
+          <ul style="font-size: 1.1rem; line-height: 1.8; text-align: left;">
+            <li>Rescatamos animales en situación de calle</li>
+            <li>Brindamos atención veterinaria y rehabilitación</li>
+            <li>Buscamos hogares temporales y definitivos</li>
+            <li>Promovemos la adopción responsable</li>
+            <li>Educamos sobre el cuidado animal</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-12 fade-up">
+        <div style="background-color: rgba(0, 191, 165, 0.15); padding: 2rem; border-radius: 1rem; text-align: center;">
+          <h3 style="color: #00796b; margin-bottom: 1rem;">Nuestros Valores ✨</h3>
+          <div class="row">
+            <div class="col-md-3 col-6 mb-3">
+              <i class="fas fa-heart" style="color: #ff4081; font-size: 2.5rem;"></i>
+              <p style="margin-top: 0.5rem; font-weight: bold;">Amor</p>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+              <i class="fas fa-hands-helping" style="color: #ff9800; font-size: 2.5rem;"></i>
+              <p style="margin-top: 0.5rem; font-weight: bold;">Compromiso</p>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+              <i class="fas fa-shield-alt" style="color: #00796b; font-size: 2.5rem;"></i>
+              <p style="margin-top: 0.5rem; font-weight: bold;">Protección</p>
+            </div>
+            <div class="col-md-3 col-6 mb-3">
+              <i class="fas fa-handshake" style="color: #009688; font-size: 2.5rem;"></i>
+              <p style="margin-top: 0.5rem; font-weight: bold;">Responsabilidad</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANIMALES -->
+<section class="animal-section" id="adopta">
+  <div class="container text-center">
+    <h2>Conoce algunos de nuestros animales🐾🏡</h2>
+    
+    <!-- Carrusel de animales -->
+    <div class="animal-carousel-container">
+      <button class="carousel-control carousel-control-prev" onclick="scrollCarousel('prev')">
+        <i class="fas fa-chevron-left"></i>
+      </button>
+      
+      <div class="animal-carousel" id="animalCarousel">
+        {% for animal in animales %}
+        <div class="animal-card" style="background-color: #b2ece6; border-radius: 15px;">
+          <div class="animal-img-wrapper">
+            {% if animal.foto %}
+              <img src="{{ animal.foto.url }}" class="animal-img" alt="{{ animal.especie }} rescatado - {{ animal.nombre }}" />
+            {% else %}
+              <img src="/media/animales/logo.jpg" class="animal-img" alt="Sin foto - {{ animal.nombre }}" />
+            {% endif %}
+          </div>
+          <p>
+            <i class="fa-solid fa-paw paw-icon"></i>
+            <span class="animal-name">{{ animal.nombre }}</span>
+            {% if animal.especie == 'Perro' %}
+              <i class="fa-solid fa-dog paw-icon"></i>
+            {% elif animal.especie == 'Gato' %}
+              <i class="fa-solid fa-cat paw-icon"></i>
+            {% else %}
+              <i class="fa-solid fa-paw paw-icon"></i>
+            {% endif %}
+          </p>
+          <button class="btn btn-info-medical w-100" data-bs-toggle="modal" data-bs-target="#modalInfo{{ animal.id }}">
+            <i class="fas fa-info-circle"></i> Ver más
+          </button>
+          <button class="btn btn-warning w-100 mt-2" data-bs-toggle="modal" data-bs-target="#modal{{ animal.id }}">¡Adóptame!</button>
+        </div>
+        {% empty %}
+        <div class="text-center w-100">
+          <p class="text-muted">No hay animales disponibles para adopción en este momento.</p>
+        </div>
+        {% endfor %}
+      </div>
+      
+      <button class="carousel-control carousel-control-next" onclick="scrollCarousel('next')">
+        <i class="fas fa-chevron-right"></i>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Modales personalizados -->
+{% for animal in animales %}
+<!-- Modal Adopción - {{ animal.nombre }} -->
+<div class="modal fade" id="modal{{ animal.id }}" tabindex="-1" aria-labelledby="modal{{ animal.id }}Label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 18px; overflow: hidden; font-family: 'Comic Sans MS', cursive;">
+      <div class="modal-header" style="background-color: #42C4B1; color: white; border-bottom: none;">
+        <h5 class="modal-title w-100 text-center" id="modal{{ animal.id }}Label" style="font-weight: bold;">
+          ¿Te interesa {{ animal.nombre }}? 
+          {% if animal.especie == 'Gato' %}😻{% elif animal.especie == 'Perro' %}🐶{% else %}🐾{% endif %}
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body text-center" style="background-color: #fff5dc;">
+        {% if request.session.usuario_id %}
+          <!-- Usuario REGISTRADO -->
+          <p style="font-size: 18px;"><strong>¡Excelente decisión!</strong></p>
+          <p style="font-size: 16px;">
+            Para continuar con el proceso de adopción de <strong>{{ animal.nombre }}</strong>,<br>
+            por favor completa el siguiente formulario:
+          </p>
+          <div class="mt-3">
+            <button type="button" class="btn" style="background-color: #4CAF50; color: white; font-weight: bold; border-radius: 12px; padding: 10px 20px;" data-bs-toggle="modal" data-bs-target="#formularioAdopcion{{ animal.id }}">
+              <i class="fas fa-file-alt"></i> Llenar Formulario
+            </button>
+            <button type="button" class="btn" data-bs-dismiss="modal" style="background-color: #6c757d; color: white; margin-left: 10px; border-radius: 12px;">
+              Cerrar
+            </button>
+          </div>
+          <p class="mt-3" style="font-size: 14px; color: #666;">
+            Después de enviarlo, te contactaremos para agendar una entrevista 📞
+          </p>
+        {% else %}
+          <!-- Usuario NO REGISTRADO -->
+          <p style="font-size: 18px;"><strong>¡Gracias por tu interés!</strong></p>
+          <p style="font-size: 16px;">
+            Para adoptar a {{ animal.nombre }} necesitas estar registrado.<br>
+            Puedes registrarte ahora o contactarnos por Instagram 📱
+          </p>
+          <div class="mt-3">
+            <a href="{% url 'login' %}" class="btn" style="background-color: #4CAF50; color: white; font-weight: bold; border-radius: 12px; padding: 10px 20px;">
+              <i class="fas fa-user-plus"></i> Registrarse
+            </a>
+            <a href="https://www.instagram.com/rescatandoando_stgo" target="_blank" class="btn" style="background-color: #fcbf49; color: white; font-weight: bold; border-radius: 12px; padding: 10px 20px;">
+              <i class="fab fa-instagram"></i> Instagram
+            </a>
+          </div>
+          <button type="button" class="btn mt-2" data-bs-dismiss="modal" style="background-color: #6c757d; color: white; border-radius: 12px;">
+            Cerrar
+          </button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Info Médica - {{ animal.nombre }} -->
+<div class="modal fade modal-medical" id="modalInfo{{ animal.id }}" tabindex="-1" aria-labelledby="modalInfo{{ animal.id }}Label" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content" style="border-radius: 18px; overflow: hidden;">
+      <div class="modal-header">
+        <h5 class="modal-title w-100 text-center" id="modalInfo{{ animal.id }}Label">
+          <i class="fas fa-heartbeat"></i> Información Médica - {{ animal.nombre }}
+          {% if animal.especie == 'Gato' %}😻{% elif animal.especie == 'Perro' %}🐶{% else %}🐾{% endif %}
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <div class="medical-info-section">
+          <h5><i class="fas fa-paw"></i> Información General</h5>
+          <div class="info-item">
+            <i class="fas fa-tag"></i>
+            <strong>Nombre:</strong> {{ animal.nombre }}
+          </div>
+          <div class="info-item">
+            {% if animal.especie == 'Perro' %}
+              <i class="fas fa-dog"></i>
+            {% elif animal.especie == 'Gato' %}
+              <i class="fas fa-cat"></i>
+            {% else %}
+              <i class="fas fa-paw"></i>
+            {% endif %}
+            <strong>Especie:</strong> {{ animal.especie }}
+          </div>
+          <div class="info-item">
+            <i class="fas fa-birthday-cake"></i>
+            <strong>Edad:</strong> {{ animal.edad }}
+          </div>
+          <div class="info-item">
+            <i class="fas fa-venus-mars"></i>
+            <strong>Sexo:</strong> {{ animal.sexo }}
+          </div>
+          {% if animal.peso %}
+          <div class="info-item">
+            <i class="fas fa-weight"></i>
+            <strong>Peso:</strong> {{ animal.peso }} kg
+          </div>
+          {% endif %}
+        </div>
+
+        {% if animal.ficha %}
+        <div class="medical-info-section">
+          <h5><i class="fas fa-syringe"></i> Vacunación y Esterilización</h5>
+          <div class="info-item">
+            <i class="fas fa-check-circle"></i>
+            <strong>Esterilizado:</strong> 
+            {% if animal.ficha.esterilizado %}
+              <span class="badge-status badge-si">SÍ</span>
+            {% else %}
+              <span class="badge-status badge-proceso">NO</span>
+            {% endif %}
+          </div>
+          {% if animal.ficha.fecha_esterilizacion %}
+          <div class="info-item">
+            <i class="fas fa-calendar-alt"></i>
+            <strong>Fecha de esterilización:</strong> {{ animal.ficha.fecha_esterilizacion|date:"d/m/Y" }}
+          </div>
+          {% endif %}
+          <div class="info-item">
+            <i class="fas fa-shield-virus"></i>
+            <strong>Vacunas al día:</strong> 
+            {% if animal.ficha.vacunas_al_dia %}
+              <span class="badge-status badge-si">SÍ</span>
+            {% else %}
+              <span class="badge-status badge-proceso">NO</span>
+            {% endif %}
+          </div>
+          {% if animal.ficha.ultima_vacunacion %}
+          <div class="info-item">
+            <i class="fas fa-calendar-check"></i>
+            <strong>Última vacunación:</strong> {{ animal.ficha.ultima_vacunacion }}
+          </div>
+          {% endif %}
+        </div>
+
+        <div class="medical-info-section">
+          <h5><i class="fas fa-stethoscope"></i> Control Veterinario</h5>
+          {% if animal.ficha.ultimo_control %}
+          <div class="info-item">
+            <i class="fas fa-calendar"></i>
+            <strong>Último control:</strong> {{ animal.ficha.ultimo_control|date:"d/m/Y" }}
+          </div>
+          {% endif %}
+          {% if animal.ficha.proximo_control %}
+          <div class="info-item">
+            <i class="fas fa-calendar-plus"></i>
+            <strong>Próximo control:</strong> {{ animal.ficha.proximo_control|date:"d/m/Y" }}
+          </div>
+          {% endif %}
+          {% if animal.ficha.estado_salud %}
+          <div class="info-item">
+            <i class="fas fa-heartbeat"></i>
+            <strong>Estado de salud:</strong> {{ animal.ficha.estado_salud }}
+          </div>
+          {% endif %}
+        </div>
+
+        {% if animal.ficha.observaciones %}
+        <div class="medical-info-section">
+          <h5><i class="fas fa-notes-medical"></i> Observaciones Médicas</h5>
+          <p style="margin: 0; line-height: 1.6;">
+            {{ animal.ficha.observaciones }}
+          </p>
+        </div>
+        {% endif %}
+        {% else %}
+        <div class="medical-info-section">
+          <p class="text-muted text-center">No hay información médica registrada para este animal.</p>
+        </div>
+        {% endif %}
+      </div>
+      <div class="modal-footer" style="justify-content: center;">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" class="btn btn-warning" data-bs-dismiss="modal" data-bs-toggle="modal" data-bs-target="#modal{{ animal.id }}">
+          <i class="fas fa-heart"></i> ¡Quiero Adoptar!
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Formulario de Adopción - {{ animal.nombre }} -->
+<div class="modal fade" id="formularioAdopcion{{ animal.id }}" tabindex="-1" aria-labelledby="formularioAdopcion{{ animal.id }}Label" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="border-radius: 18px; overflow: hidden;">
+      <div class="modal-header" style="background: linear-gradient(135deg, #42C4B1, #00897b); color: white;">
+        <h5 class="modal-title" id="formularioAdopcion{{ animal.id }}Label">
+          <i class="fas fa-heart"></i> Solicitud de Adopción - {{ animal.nombre }}
+        </h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <form method="POST" action="{% url 'solicitar_adopcion' animal.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="modal-body" style="font-family: Arial, sans-serif; max-height: 70vh; overflow-y: auto;">
+          <div class="alert alert-warning">
+            <strong><i class="fas fa-exclamation-triangle"></i> IMPORTANTE:</strong><br>
+            • Velamos por tenencia 100% INDOOR<br>
+            • Se hará seguimiento al animal con fotos constantemente 📸<br>
+            • Se solicitarán fotos de controles veterinarios y vacunación
+          </div>
+
+          <h6 class="mt-3 mb-2" style="color: #00897b;"><i class="fas fa-user"></i> Datos Personales</h6>
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <label class="form-label" style="font-size: 0.9rem;">Nombre Completo *</label>
+              <input type="text" class="form-control form-control-sm" name="nombre" required>
+            </div>
+            <div class="col-md-6 mb-2">
+              <label class="form-label" style="font-size: 0.9rem;">Teléfono *</label>
+              <input type="tel" class="form-control form-control-sm" name="telefono" required>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <label class="form-label" style="font-size: 0.9rem;">RUT</label>
+              <input type="text" class="form-control form-control-sm" name="rut" placeholder="12.345.678-9">
+            </div>
+            <div class="col-md-6 mb-2">
+              <label class="form-label" style="font-size: 0.9rem;">Foto Carnet Frontal</label>
+              <input type="file" class="form-control form-control-sm" name="foto_carnet_frontal" accept="image/*">
+            </div>
+            <div class="col-md-6 mb-2">
+              <label class="form-label" style="font-size: 0.9rem;">Foto Carnet Trasera</label>
+              <input type="file" class="form-control form-control-sm" name="foto_carnet_trasera" accept="image/*">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <label class="form-label" style="font-size: 0.9rem;">¿Es extranjero? *</label>
+              <select class="form-select form-select-sm" name="es_extranjero" id="esExtranjero{{ animal.id }}" required onchange="toggleResidencia{{ animal.id }}()">
+                <option value="0">No</option>
+                <option value="1">Sí</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-2" id="divResidencia{{ animal.id }}" style="display:none;">
+              <label class="form-label" style="font-size: 0.9rem;">¿Cuenta con residencia definitiva? *</label>
+              <select class="form-select form-select-sm" name="tiene_residencia_definitiva">
+                <option value="1">Sí</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4 mb-2">
+              <label class="form-label" style="font-size: 0.9rem;">Ciudad *</label>
+              <input type="text" class="form-control form-control-sm" name="ciudad" required>
+            </div>
+            <div class="col-md-4 mb-2">
+              <label class="form-label" style="font-size: 0.9rem;">Comuna *</label>
+              <input type="text" class="form-control form-control-sm" name="comuna" required>
+            </div>
+            <div class="col-md-4 mb-2">
+              <label class="form-label" style="font-size: 0.9rem;">Edad *</label>
+              <input type="number" class="form-control form-control-sm" name="edad" min="18" required>
+            </div>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label" style="font-size: 0.9rem;">Dirección completa *</label>
+            <input type="text" class="form-control form-control-sm" name="direccion" required>
+          </div>
+
+          <h6 class="mt-3 mb-2" style="color: #00897b;"><i class="fas fa-heart"></i> Motivación y Experiencia</h6>
+          <div class="mb-2">
+            <label class="form-label" style="font-size: 0.9rem;">¿Por qué quieres adoptar? *</label>
+            <textarea class="form-control form-control-sm" name="por_que_adoptar" rows="2" required></textarea>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <label class="form-label" style="font-size: 0.9rem;">¿Tienes o has tenido mascotas? *</label>
+              <select class="form-select form-select-sm" name="tiene_o_tuvo_mascotas" id="tieneMascotas{{ animal.id }}" required onchange="toggleMascotas{{ animal.id }}()">
+                <option value="">Selecciona...</option>
+                <option value="1">Sí</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-2" id="divEsterilizadas{{ animal.id }}" style="display:none;">
+              <label class="form-label" style="font-size: 0.9rem;">¿Están esterilizadas y vacunadas? *</label>
+              <select class="form-select form-select-sm" name="mascotas_esterilizadas_vacunadas">
+                <option value="Si">Sí</option>
+                <option value="No">No</option>
+                <option value="Parcial">Parcialmente</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label" style="font-size: 0.9rem;">¿Qué alimento comen/comerán tus mascotas? *</label>
+            <input type="text" class="form-control form-control-sm" name="alimento_mascotas" placeholder="Marca y tipo de alimento" required>
+          </div>
+
+          <h6 class="mt-3 mb-2" style="color: #00897b;"><i class="fas fa-users"></i> Información Familiar</h6>
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <label class="form-label" style="font-size: 0.9rem;">¿Cuántos miembros son en la familia? *</label>
+              <input type="number" class="form-control form-control-sm" name="miembros_familia" min="1" required>
+            </div>
+            <div class="col-md-6 mb-2">
+              <label class="form-label" style="font-size: 0.9rem;">¿Decisión compartida con la familia? *</label>
+              <select class="form-select form-select-sm" name="decision_compartida" required>
+                <option value="1">Sí</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <label class="form-label" style="font-size: 0.9rem;">¿Eres alérgico? *</label>
+              <select class="form-select form-select-sm" name="es_alergico" id="esAlergico{{ animal.id }}" required onchange="toggleAlergia{{ animal.id }}()">
+                <option value="0">No</option>
+                <option value="1">Sí</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-2" id="divMedidasAlergia{{ animal.id }}" style="display:none;">
+              <label class="form-label" style="font-size: 0.9rem;">¿Qué medidas tomarías?</label>
+              <input type="text" class="form-control form-control-sm" name="medidas_alergia">
+            </div>
+          </div>
+
+          <h6 class="mt-3 mb-2" style="color: #00897b;"><i class="fas fa-home"></i> Vivienda</h6>
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <label class="form-label" style="font-size: 0.9rem;">Tipo de vivienda *</label>
+              <select class="form-select form-select-sm" name="tipo_vivienda" required>
+                <option value="">Selecciona...</option>
+                <option value="Casa">Casa</option>
+                <option value="Departamento">Departamento</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-2">
+              <label class="form-label" style="font-size: 0.9rem;">¿Tienes mallas de protección? *</label>
+              <select class="form-select form-select-sm" name="tiene_mallas_proteccion" required>
+                <option value="1">Sí</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <label class="form-label" style="font-size: 0.9rem;">¿Permiten mascotas donde vives? *</label>
+              <select class="form-select form-select-sm" name="permiten_mascotas" required>
+                <option value="1">Sí</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-2">
+              <label class="form-label" style="font-size: 0.9rem;">¿Tienes recursos económicos para mantenerla? *</label>
+              <select class="form-select form-select-sm" name="tiene_recursos_economicos" required>
+                <option value="1">Sí</option>
+                <option value="0">No</option>
+              </select>
+            </div>
+          </div>
+
+          <h6 class="mt-3 mb-2" style="color: #00897b;"><i class="fas fa-handshake"></i> Compromiso</h6>
+          <div class="mb-2">
+            <label class="form-label" style="font-size: 0.9rem;">¿Qué pasa con la mascota en caso de mudanza o cambio de ciudad? *</label>
+            <textarea class="form-control form-control-sm" name="que_pasa_si_mudanza" rows="2" required></textarea>
+          </div>
+
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" name="acepta_videollamada" value="1" id="aceptaVideo{{ animal.id }}" required>
+            <label class="form-check-label" for="aceptaVideo{{ animal.id }}" style="font-size: 0.85rem;">
+              Acepto realizar videollamada para mostrar el espacio donde vivirá la mascota *
+            </label>
+          </div>
+
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" name="acepta_tenencia_indoor" value="1" id="aceptaIndoor{{ animal.id }}" required>
+            <label class="form-check-label" for="aceptaIndoor{{ animal.id }}" style="font-size: 0.85rem;">
+              Acepto tenencia 100% INDOOR (dentro del hogar) *
+            </label>
+          </div>
+
+          <div class="form-check mb-2">
+            <input class="form-check-input" type="checkbox" name="acepta_seguimiento" value="1" id="aceptaSeguimiento{{ animal.id }}" required>
+            <label class="form-check-label" for="aceptaSeguimiento{{ animal.id }}" style="font-size: 0.85rem;">
+              Acepto seguimiento y envío de fotos del animal constantemente *
+            </label>
+          </div>
+
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" name="acepta_enviar_fotos" value="1" id="aceptaFotos{{ animal.id }}" required>
+            <label class="form-check-label" for="aceptaFotos{{ animal.id }}" style="font-size: 0.85rem;">
+              Acepto enviar fotos de controles veterinarios y vacunación *
+            </label>
+          </div>
+
+          <div class="alert alert-info" style="font-size: 0.85rem;">
+            <i class="fas fa-info-circle"></i> Al enviar este formulario, aceptas que llevarás una vida contigo y una responsabilidad por muchos años 🐾
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn" style="background: linear-gradient(135deg, #42C4B1, #00897b); color: white;">
+            <i class="fas fa-paper-plane"></i> Enviar Solicitud
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script>
+function toggleResidencia{{ animal.id }}() {
+  var select = document.getElementById('esExtranjero{{ animal.id }}');
+  var div = document.getElementById('divResidencia{{ animal.id }}');
+  div.style.display = select.value == '1' ? 'block' : 'none';
+}
+
+function toggleMascotas{{ animal.id }}() {
+  var select = document.getElementById('tieneMascotas{{ animal.id }}');
+  var div = document.getElementById('divEsterilizadas{{ animal.id }}');
+  div.style.display = select.value == '1' ? 'block' : 'none';
+}
+
+function toggleAlergia{{ animal.id }}() {
+  var select = document.getElementById('esAlergico{{ animal.id }}');
+  var div = document.getElementById('divMedidasAlergia{{ animal.id }}');
+  div.style.display = select.value == '1' ? 'block' : 'none';
+}
+</script>
+{% endfor %}
+
+
+ <!-- ¿CÓMO AYUDAR? -->
+<section class="como-ayudar">
+  <div class="container text-center">
+    <h2 class="titulo-seccion">¿Cómo ayudar?</h2>
+    <div class="row justify-content-center g-4">
+      <!-- Tarjeta DONAR -->
+      <div class="col-12 col-sm-6 col-lg-4 fade-up">
+        <div class="help-card text-center" style="cursor:pointer;" onclick="window.location.href='{% url 'ayudar' %}#donar'">
+          <i class="fas fa-donate fa-3x mb-3"></i>
+          <h4>Donar</h4>
+          <p>Tu apoyo económico nos permite cubrir alimentación, atención veterinaria, medicamentos y más. ¡Cada aporte hace una gran diferencia! 🐾</p>
+        </div>
+      </div>
+
+      <!-- Tarjeta ADOPTAR -->
+      <div class="col-12 col-sm-6 col-lg-4 fade-up">
+        <div class="help-card text-center" style="cursor:pointer;" onclick="window.location.href='{% url 'ayudar' %}#adoptar'">
+          <i class="fas fa-heart fa-3x mb-3"></i>
+          <h4>Adoptar</h4>
+          <p>Dale un hogar lleno de amor a un animal rescatado. Ellos están listos para darte todo su cariño y lealtad incondicional.</p>
+        </div>
+      </div>
+
+      <!-- Tarjeta VOLUNTARIADO -->
+      <div class="col-12 col-sm-6 col-lg-4 fade-up">
+        <div class="help-card text-center" style="cursor:pointer;" onclick="window.location.href='{% url 'ayudar' %}#voluntario'">
+          <i class="fas fa-hands-helping fa-3x mb-3"></i>
+          <h4>Voluntariado</h4>
+          <p>¿Amas y respetas a los animales y quieres hacer la diferencia? Estamos buscando voluntarios/as en diversas áreas para apoyar nuestra misión de rescate animal. <strong>¡Tu ayuda puede cambiar vidas!</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Botón flotante de WhatsApp -->
+  <a href="https://wa.me/56912345678?text=Hola,%20me%20interesa%20información%20sobre%20RescatandoAndo%20🐾" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+
+  <!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <p class="mb-1">&copy; 2024 RescatandoAndo Stgo. Organización sin fines de lucro..</p>
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-whatsapp"></i></a>
+      <a href="https://www.instagram.com/rescatandoando_stgo/" target="_blank" rel="noopener noreferrer">
+        <i class="fab fa-instagram"></i>
+      </a>
+    </div>
+  </div>
+</footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Scroll Animation Script -->
+  <script>
+    const fadeEls = document.querySelectorAll('.fade-up');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('show');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    fadeEls.forEach(el => observer.observe(el));
+
+    // Función para el carrusel de animales
+    function scrollCarousel(direction) {
+      const carousel = document.getElementById('animalCarousel');
+      const scrollAmount = 370; // Ancho de la tarjeta (350px) + gap (20px)
+      
+      if (direction === 'next') {
+        carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      } else {
+        carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+      }
+    }
+  </script>
+</body>
+</html>

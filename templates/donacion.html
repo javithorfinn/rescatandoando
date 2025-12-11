@@ -1,0 +1,242 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Realizar Donación - Rescatando🐶🐱</title>
+  <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Chewy', cursive;
+      background-image: url('/media/animales/fondo.jpg');
+      background-size: 120px;
+      background-repeat: repeat;
+      min-height: 100vh;
+    }
+    .navbar { background-color: #009688; }
+    .navbar .nav-link, .navbar-brand { color: #ffffff !important; }
+    .container-main {
+      max-width: 800px;
+      margin: 3rem auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 3rem;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+    .page-header {
+      text-align: center;
+      color: #009688;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 3px solid #009688;
+    }
+    .form-label {
+      font-weight: bold;
+      color: #00695c;
+      font-size: 1.1rem;
+    }
+    .form-control, .form-select {
+      border: 2px solid #b2dfdb;
+      border-radius: 10px;
+      padding: 0.75rem;
+      font-size: 1rem;
+    }
+    .form-control:focus, .form-select:focus {
+      border-color: #009688;
+      box-shadow: 0 0 0 0.2rem rgba(0, 150, 136, 0.25);
+    }
+    .btn-submit {
+      background: linear-gradient(135deg, #009688, #00695c);
+      color: white;
+      border: none;
+      padding: 1rem 2rem;
+      font-size: 1.3rem;
+      border-radius: 15px;
+      width: 100%;
+      margin-top: 1.5rem;
+      transition: transform 0.2s;
+    }
+    .btn-submit:hover {
+      transform: scale(1.05);
+      background: linear-gradient(135deg, #00695c, #004d40);
+    }
+    .info-box {
+      background: #e0f7fa;
+      border-left: 5px solid #00acc1;
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin-bottom: 2rem;
+    }
+    .bank-info {
+      background: #fff3e0;
+      border-radius: 10px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      border: 2px dashed #ff9800;
+    }
+    .file-upload-wrapper {
+      position: relative;
+      border: 3px dashed #009688;
+      border-radius: 15px;
+      padding: 2rem;
+      text-align: center;
+      background: #e0f7fa;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    .file-upload-wrapper:hover {
+      background: #b2dfdb;
+      border-color: #00695c;
+    }
+    .file-upload-wrapper input[type="file"] {
+      position: absolute;
+      opacity: 0;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'index' %}">RescatandoAndo🦴🐾</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'ayudar' %}">Cómo Ayudar</a></li>
+          {% if request.session.usuario_id %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-main">
+    <div class="page-header">
+      <h1><i class="fas fa-hand-holding-heart"></i> Realizar Donación</h1>
+      <p class="text-muted mb-0">Tu ayuda marca la diferencia 🐾💕</p>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+
+    <div class="bank-info">
+      <h4 class="text-center mb-3"><i class="fas fa-university"></i> Datos para Transferencia</h4>
+      <div class="row">
+        <div class="col-md-6">
+          <p><strong>Banco:</strong> Mercado Pago</p>
+          <p><strong>Rut:</strong> 20.226.300-3</p>
+          <p><strong>Nombre:</strong> Catalina Paz Ortiz Olivares</p>
+        </div>
+        <div class="col-md-6">
+          <p><strong>Tipo:</strong> Cuenta Vista</p>
+          <p><strong>Número de cuenta:</strong> 1057709108</p>
+          <p><strong>Correo:</strong> Rescatandoandostg@gmail.com</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <p class="mb-0"><i class="fas fa-info-circle"></i> <strong>Importante:</strong> Después de realizar tu transferencia, completa los datos y sube tu comprobante.</p>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      {% if not usuario_logueado %}
+      <div class="mb-4">
+        <label for="nombre_donante" class="form-label">
+          <i class="fas fa-user"></i> Nombre Completo *
+        </label>
+        <input type="text" class="form-control" id="nombre_donante" name="nombre_donante" required
+               placeholder="Tu nombre completo" value="{{ form.nombre_donante.value|default:'' }}">
+      </div>
+      {% endif %}
+      
+      <div class="mb-4">
+        <label for="monto" class="form-label">
+          <i class="fas fa-dollar-sign"></i> Monto de la Donación (CLP) *
+        </label>
+        <input type="number" class="form-control" id="monto" name="monto" required
+               min="1000" step="100" placeholder="Ej: 5000" value="{{ form.monto.value|default:'' }}">
+        <small class="text-muted">Monto mínimo: $1.000</small>
+      </div>
+
+      <div class="mb-4">
+        <label for="fecha" class="form-label">
+          <i class="fas fa-calendar-alt"></i> Fecha de la Donación *
+        </label>
+        <input type="date" class="form-control" id="fecha" name="fecha" required
+               value="{{ form.fecha.value|default:'' }}">
+      </div>
+
+      <div class="mb-4">
+        <label for="comprobante" class="form-label">
+          <i class="fas fa-file-upload"></i> Comprobante de Transferencia *
+        </label>
+        <div class="file-upload-wrapper" onclick="document.getElementById('comprobante').click()">
+          <i class="fas fa-cloud-upload-alt fa-3x text-primary mb-2"></i>
+          <p class="mb-0"><strong>Haz clic aquí para subir tu comprobante</strong></p>
+          <small class="text-muted">Formatos aceptados: JPG, PNG, PDF (Máx. 5MB)</small>
+          <input type="file" class="form-control" id="comprobante" name="comprobante" required
+                 accept="image/jpeg,image/png,application/pdf" onchange="mostrarArchivo(this)">
+        </div>
+        <div id="archivo-seleccionado" class="mt-2"></div>
+      </div>
+
+      <button type="submit" class="btn btn-submit">
+        <i class="fas fa-heart"></i> Registrar Donación
+      </button>
+    </form>
+
+    <div class="text-center mt-4">
+      <p class="text-muted">
+        <i class="fas fa-lock"></i> Tus datos están seguros y solo se usan para procesar tu donación
+      </p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function mostrarArchivo(input) {
+      const archivo = input.files[0];
+      const contenedor = document.getElementById('archivo-seleccionado');
+      
+      if (archivo) {
+        const tamaño = (archivo.size / 1024 / 1024).toFixed(2);
+        contenedor.innerHTML = `
+          <div class="alert alert-success">
+            <i class="fas fa-check-circle"></i> <strong>Archivo seleccionado:</strong> ${archivo.name} (${tamaño} MB)
+          </div>
+        `;
+      }
+    }
+
+    // Auto-desvanecer mensajes después de 4 segundos
+    document.addEventListener('DOMContentLoaded', function() {
+      const alerts = document.querySelectorAll('.alert');
+      alerts.forEach(function(alert) {
+        setTimeout(function() {
+          const bsAlert = new bootstrap.Alert(alert);
+          bsAlert.close();
+        }, 4000);
+      });
+    });
+  </script>
+</body>
+</html>

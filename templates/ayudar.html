@@ -1,0 +1,990 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>¿Cómo Ayudar? - Rescatando🐶🐱</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet" />
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Chewy', cursive;
+      margin: 0;
+      padding: 0;
+      background-image: url('/media/animales/fondo.jpg');
+      background-size: 120px;
+      background-repeat: repeat;
+      min-height: 100vh;
+      font-size: 1.15rem;
+    }
+
+    .navbar {
+      background-color: #009688;
+      position: relative;
+      z-index: 10;
+      padding: 0.5rem 0;
+    }
+
+    .navbar .nav-link,
+    .navbar-brand {
+      color: #ffffff !important;
+      font-size: 1.3rem;
+    }
+
+    .logo-img {
+      height: 55px;
+      width: 55px;
+      margin-right: 10px;
+      vertical-align: middle;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    /* Eliminado border-radius, height, width y object-fit para evitar formas ovaladas en el header */
+
+    .header-cover {
+      position: relative;
+      background: linear-gradient(to top right, #00bfa5, #80deea);
+      padding: 2.8rem 1rem 4.2rem;
+      color: white;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .header-cover::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: url('/media/animales/header.jpg.webp') center 30% / cover no-repeat;
+      opacity: 0.25;
+      filter: blur(0px);
+      z-index: 1;
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .page-header-logo {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 6px solid white;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.32);
+      margin-bottom: 1.5rem;
+    }
+
+    .header-cover h1 {
+      font-size: 4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .header-cover p {
+      font-size: 1.8rem;
+      margin: 0;
+    }
+
+    .wave-divider {
+      display: block;
+      background-color: transparent;
+      line-height: 0;
+      margin-bottom: -1px;
+    }
+
+    .wave-divider svg {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+
+    .container-main {
+      position: relative;
+      z-index: 1;
+      padding: 3rem 0;
+      background-color: rgba(255, 255, 255, 0.6);
+    }
+
+    .nav-tabs-custom {
+      border-bottom: 3px solid #009688;
+      margin-bottom: 2rem;
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 15px 15px 0 0;
+      padding: 1rem 1rem 0 1rem;
+    }
+
+    .nav-tabs-custom .nav-link {
+      color: #00796b;
+      font-size: 1.5rem;
+      border: none;
+      border-bottom: 4px solid transparent;
+      padding: 1.2rem 2rem;
+      margin: 0 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .nav-tabs-custom .nav-link:hover {
+      border-color: #80deea;
+      background-color: rgba(0, 150, 136, 0.1);
+      border-radius: 10px 10px 0 0;
+    }
+
+    .nav-tabs-custom .nav-link.active {
+      color: #009688;
+      background-color: rgba(0, 150, 136, 0.15);
+      border-color: #009688;
+      font-weight: bold;
+      border-radius: 10px 10px 0 0;
+    }
+
+    .tab-content-custom {
+      background-color: rgba(255, 255, 255, 0.95);
+      padding: 3.5rem;
+      border-radius: 0 0 20px 20px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      min-height: 500px;
+      font-size: 1.15rem;
+    }
+
+    .section-title {
+      color: #00796b;
+      font-size: 2.5rem;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .section-icon {
+      font-size: 5rem;
+      color: #009688;
+      text-align: center;
+      margin-bottom: 1rem;
+    }
+
+    .info-card {
+      background-color: #e0f7fa;
+      padding: 2.5rem;
+      border-radius: 15px;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .info-card h4 {
+      color: #00796b;
+      margin-bottom: 1rem;
+      font-size: 1.8rem;
+    }
+
+    .info-card ul {
+      margin: 0;
+      padding-left: 1.5rem;
+    }
+
+    .info-card ul li {
+      margin-bottom: 0.5rem;
+      font-size: 1.25rem;
+    }
+
+    .donation-info {
+      background-color: #fff8e1;
+      padding: 2rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      border-left: 5px solid #ff9800;
+    }
+
+    .donation-info p {
+      margin: 0.3rem 0;
+      font-size: 1.3rem;
+    }
+
+    .donation-info strong {
+      color: #00796b;
+    }
+
+    .btn-action {
+      background-color: #009688;
+      color: white;
+      border: none;
+      padding: 1.2rem 3rem;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 1.4rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-action:hover {
+      background-color: #00796b;
+      transform: scale(1.05);
+      color: white;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn-secondary-action {
+      background-color: #ff9800;
+      color: white;
+      border: none;
+      padding: 1.2rem 3rem;
+      border-radius: 12px;
+      font-weight: bold;
+      font-size: 1.4rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-secondary-action:hover {
+      background-color: #f57c00;
+      transform: scale(1.05);
+      color: white;
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .back-home {
+      text-align: center;
+      margin: 3rem 0 2rem 0;
+    }
+
+    .back-home a {
+      background-color: #009688;
+      color: white;
+      text-decoration: none;
+      font-size: 1.1rem;
+      padding: 0.8rem 2rem;
+      border-radius: 12px;
+      display: inline-block;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+      font-weight: bold;
+    }
+
+    .back-home a:hover {
+      background-color: #00796b;
+      transform: scale(1.05);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .paw-icon {
+      color: #ff4081;
+      margin: 0 0.3rem;
+    }
+
+    .highlight-box {
+      background: linear-gradient(135deg, rgba(255, 152, 0, 0.1), rgba(255, 193, 7, 0.1));
+      border-left: 5px solid #ff9800;
+      padding: 1.5rem;
+      border-radius: 10px;
+      margin: 1.5rem 0;
+    }
+
+    .highlight-box h5 {
+      color: #00796b;
+      margin-bottom: 0.8rem;
+    }
+
+    /* Botón flotante de WhatsApp */
+    .whatsapp-float {
+      position: fixed;
+      width: 60px;
+      height: 60px;
+      bottom: 30px;
+      right: 30px;
+      background-color: #25d366;
+      color: #fff;
+      border-radius: 50px;
+      text-align: center;
+      font-size: 30px;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .whatsapp-float:hover {
+      background-color: #128c7e;
+      transform: scale(1.1);
+      box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.4);
+      color: #fff;
+    }
+
+    .whatsapp-float i {
+      margin: 0;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'index' %}">
+        <img src="/media/animales/logo.jpg" alt="Logo RescatandoAndo" class="logo-img">
+        RescatandoAndo🐾
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'index' %}#nosotros">Acerca de Nosotros</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'index' %}#adopta">Animales</a></li>
+          
+          {% if request.session.usuario_id %}
+            <!-- Usuario autenticado -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {% if request.session.usuario_avatar %}
+                  <span style="font-size: 30px; margin-right: 5px;">
+                    {% if request.session.usuario_avatar == 'perro' %}🐕
+                    {% elif request.session.usuario_avatar == 'gato' %}🐱
+                    {% elif request.session.usuario_avatar == 'pajaro' %}🦜
+                    {% elif request.session.usuario_avatar == 'chanchito' %}🐷
+                    {% elif request.session.usuario_avatar == 'rata' %}🐭
+                    {% elif request.session.usuario_avatar == 'caballo' %}🐴
+                    {% elif request.session.usuario_avatar == 'conejo' %}🐰
+                    {% elif request.session.usuario_avatar == 'tortuga' %}🐢
+                    {% elif request.session.usuario_avatar == 'vaca' %}🐮
+                    {% elif request.session.usuario_avatar == 'dinosaurio' %}🦖
+                    {% else %}🐕{% endif %}
+                  </span>
+                {% else %}
+                  <i class="fas fa-user-circle"></i>
+                {% endif %}
+                {{ request.session.usuario_nombre }}
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url 'perfil' %}"><i class="fas fa-user"></i> Mi Perfil</a></li>
+                {% if request.session.usuario_rol != 'admin' %}
+                  <li><a class="dropdown-item" href="{% url 'mis_adopciones' %}"><i class="fas fa-heart"></i> Mis Adopciones</a></li>
+                {% endif %}
+                {% if request.session.usuario_rol == 'admin' or request.session.usuario_rol == 'voluntario' %}
+                  <li><hr class="dropdown-divider"></li>
+                  <li><a class="dropdown-item" href="{% url 'gestionar_animales' %}"><i class="fas fa-plus"></i> Gestionar Animales</a></li>
+                  <li><a class="dropdown-item" href="{% url 'ver_solicitudes' %}"><i class="fas fa-list"></i> Ver Solicitudes</a></li>
+                {% endif %}
+                {% if request.session.usuario_rol == 'admin' %}
+                  <li><a class="dropdown-item" href="{% url 'gestionar_usuarios' %}"><i class="fas fa-users-cog"></i> Gestionar Usuarios</a></li>
+                {% endif %}
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+              </ul>
+            </li>
+          {% else %}
+            <!-- Usuario no autenticado -->
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Ingresar/Registrarse</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <header class="header-cover">
+    <div class="header-content" style="margin-top: 1.5rem;">
+      <img src="/media/animales/logo.jpg" alt="Logo RescatandoAndo" class="page-header-logo" style="margin-bottom: 1.5rem;">
+      <h1 style="margin-top: 2.5rem;"><i class="fas fa-paw paw-icon"></i> ¿Cómo Puedes Ayudar? <i class="fas fa-paw paw-icon"></i></h1>
+      <p style="margin-top: 2.2rem;">Tu apoyo hace la diferencia en la vida de nuestros rescatados 💕</p>
+    </div>
+  </header>
+
+  <!-- ONDA -->
+  <div class="wave-divider">
+    <svg viewBox="0 0 1440 60"><path fill="#ffffff" d="M0,32L48,42.7C96,53,192,75,288,74.7C384,75,480,53,576,42.7C672,32,768,32,864,42.7C960,53,1056,75,1152,74.7C1248,75,1344,53,1392,42.7L1440,32L1440,0L1392,0C1344,0,1248,0,1152,0C1056,0,960,0,864,0C768,0,672,0,576,0C480,0,384,0,288,0C192,0,96,0,48,0L0,0Z"></path></svg>
+  </div>
+
+  <div class="container container-main">
+    <!-- Mensajes de Django -->
+    {% if messages %}
+    <div class="mb-4">
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Tabs de navegación -->
+    <ul class="nav nav-tabs nav-tabs-custom" id="helpTabs" role="tablist">
+      <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="adoptar-tab" data-bs-toggle="tab" data-bs-target="#adoptar" type="button" role="tab">
+          <i class="fas fa-heart"></i> Adoptar
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="voluntario-tab" data-bs-toggle="tab" data-bs-target="#voluntario" type="button" role="tab">
+          <i class="fas fa-hands-helping"></i> Voluntariado
+        </button>
+      </li>
+      <li class="nav-item" role="presentation">
+        <button class="nav-link" id="donar-tab" data-bs-toggle="tab" data-bs-target="#donar" type="button" role="tab">
+          <i class="fas fa-donate"></i> Donación
+        </button>
+      </li>
+    </ul>
+
+    <!-- Contenido de los tabs -->
+    <div class="tab-content tab-content-custom" id="helpTabsContent">
+      
+      <!-- TAB: ADOPTAR -->
+      <div class="tab-pane fade show active" id="adoptar" role="tabpanel">
+        <div class="section-icon">
+          <i class="fas fa-heart"></i>
+        </div>
+        <h2 class="section-title">Adopta y Cambia una Vida 🏡</h2>
+        
+        <div class="row">
+          <div class="col-md-6">
+            <div class="info-card">
+              <h4><i class="fas fa-check-circle" style="color: #4caf50;"></i> ¿Por qué adoptar?</h4>
+              <ul>
+                <li>Le das una segunda oportunidad a un animal rescatado</li>
+                <li>Ganas un compañero leal y amoroso</li>
+                <li>Ayudas a reducir el abandono animal</li>
+                <li>Recibes amor incondicional</li>
+                <li>Nuestros animales están sanos y vacunados</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="info-card">
+              <h4><i class="fas fa-clipboard-list" style="color: #2196f3;"></i> Requisitos para adoptar</h4>
+              <ul>
+                <li>Ser mayor de 18 años</li>
+                <li>Tener espacio adecuado para la mascota</li>
+                <li>Compromiso de cuidado responsable</li>
+                <li>Llenar formulario de adopción</li>
+                <li>Entrevista con nuestro equipo</li>
+                <li>Seguimiento post-adopción</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="highlight-box">
+          <h5><i class="fas fa-info-circle"></i> Proceso de Adopción</h5>
+          <p><strong>1.</strong> Conoce a nuestros animales en la sección de <a href="{% url 'index' %}#adopta" style="color: #009688;">Animales en Adopción</a></p>
+          <p><strong>2.</strong> Contáctanos por Instagram o WhatsApp</p>
+          <p><strong>3.</strong> Llena el formulario de adopción</p>
+          <p><strong>4.</strong> Entrevista con nuestro equipo</p>
+          <p><strong>5.</strong> ¡Lleva a tu nuevo mejor amigo a casa! 🐾</p>
+        </div>
+
+        <div class="text-center mt-4">
+          <a href="{% url 'index' %}#adopta" class="btn btn-action">
+            <i class="fas fa-paw"></i> Ver Animales en Adopción
+          </a>
+        </div>
+      </div>
+
+      <!-- TAB: VOLUNTARIADO -->
+      <div class="tab-pane fade" id="voluntario" role="tabpanel">
+        <div class="section-icon">
+          <i class="fas fa-hands-helping"></i>
+        </div>
+        <h2 class="section-title">Únete como Voluntario 🤝</h2>
+        
+        <div class="info-card">
+          <h4><i class="fas fa-star" style="color: #ffc107;"></i> ¿Qué hace un voluntario?</h4>
+          <div class="row">
+            <div class="col-md-6">
+              <ul>
+                <li><strong>Cuidado de animales:</strong> Paseos, alimentación, juegos</li>
+                <li><strong>Hogar temporal:</strong> Acoge a un animal mientras encuentra familia</li>
+                <li><strong>Eventos:</strong> Ayuda en ferias de adopción y actividades</li>
+                <li><strong>Transporte:</strong> Traslado a veterinaria o adopciones</li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul>
+                <li><strong>Redes sociales:</strong> Difusión de casos y campañas</li>
+                <li><strong>Fotografía:</strong> Sesiones para animales en adopción</li>
+                <li><strong>Administración:</strong> Apoyo en tareas organizativas</li>
+                <li><strong>Veterinaria:</strong> Si eres profesional de la salud animal</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card" style="background-color: #ffebee;">
+          <h4><i class="fas fa-clipboard-check" style="color: #f44336;"></i> Requisitos</h4>
+          <ul>
+            <li>Amor y respeto por los animales</li>
+            <li>Compromiso y responsabilidad</li>
+            <li>Disponibilidad de tiempo (flexible)</li>
+            <li>Mayor de 16 años (menores con autorización)</li>
+            <li>Ganas de hacer la diferencia</li>
+          </ul>
+        </div>
+
+        <div class="info-card" style="background-color: #e8f5e9;">
+          <h4><i class="fas fa-list-ol" style="color: #4caf50;"></i> Proceso de Voluntariado</h4>
+          <p><strong>1. Llena la Solicitud:</strong> Completa el formulario de voluntariado con tus datos y disponibilidad</p>
+          <p><strong>2. Entrevista vía Zoom:</strong> Tendremos una reunión virtual para conocernos mejor y explicarte nuestro trabajo</p>
+          <p><strong>3. Aceptación:</strong> Si eres aceptado, te daremos la bienvenida a nuestro equipo</p>
+          <p><strong>4. Integración:</strong> Te agregaremos a los grupos de WhatsApp y coordinaremos tu capacitación</p>
+          <p><strong>5. ¡Comienza tu labor!</strong> Empieza a ayudar a nuestros rescatados según tu disponibilidad</p>
+        </div>
+
+        <div class="text-center mt-4">
+          <button type="button" class="btn btn-action me-3" data-bs-toggle="modal" data-bs-target="#modalVoluntariado">
+            <i class="fas fa-hands-helping"></i> Ser Voluntario
+          </button>
+          <button type="button" class="btn btn-secondary-action" data-bs-toggle="modal" data-bs-target="#modalHogarTemporal">
+            <i class="fas fa-home"></i> Ser Hogar Temporal
+          </button>
+        </div>
+      </div>
+
+      <!-- TAB: DONACIÓN -->
+      <div class="tab-pane fade" id="donar" role="tabpanel">
+        <div class="section-icon">
+          <i class="fas fa-donate"></i>
+        </div>
+        <h2 class="section-title">Ayuda con tu Donación 💖</h2>
+        
+        <div class="info-card">
+          <h4><i class="fas fa-hand-holding-heart" style="color: #e91e63;"></i> ¿En qué se usan las donaciones?</h4>
+          <div class="row">
+            <div class="col-md-6">
+              <ul>
+                <li><strong>Atención veterinaria:</strong> Consultas, vacunas, esterilizaciones</li>
+                <li><strong>Medicamentos:</strong> Tratamientos y cirugías</li>
+                <li><strong>Alimentación:</strong> Comida de calidad para todos</li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul>
+                <li><strong>Refugio:</strong> Mantenimiento de instalaciones</li>
+                <li><strong>Rescates:</strong> Operativos de emergencia</li>
+                <li><strong>Suministros:</strong> Camas, juguetes, collares, etc.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <h4 class="text-center mb-4" style="color: #00796b;">
+          <i class="fas fa-university"></i> Datos Bancarios para Donación
+        </h4>
+
+        <div class="row">
+          <div class="col-md-8 mx-auto">
+            <div class="donation-info">
+              <p><strong>Banco:</strong> Mercado Pago</p>
+              <p><strong>Rut:</strong> 20.226.300-3</p>
+              <p><strong>Nombre:</strong> Catalina Paz Ortiz Olivares</p>
+              <p><strong>Tipo:</strong> Cuenta Vista</p>
+              <p><strong>Número de cuenta:</strong> 1057709108</p>
+              <p><strong>Correo:</strong> Rescatandoandostg@gmail.com</p>
+            </div>
+
+            <div class="text-center mt-4">
+              <a href="{% url 'realizar_donacion' %}" class="btn btn-action">
+                <i class="fas fa-upload"></i> Realizar Donación y Subir Comprobante
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card mt-4" style="background-color: #f3e5f5;">
+          <h4><i class="fas fa-box" style="color: #9c27b0;"></i> Donación de Insumos</h4>
+          <p><strong>Necesitamos:</strong></p>
+          <ul>
+            <li>Alimento para perros y gatos (todas las edades)</li>
+            <li>Mantas y camas</li>
+            <li>Juguetes</li>
+            <li>Collares y correas</li>
+            <li>Platos para comida y agua</li>
+            <li>Arena para gatos</li>
+            <li>Medicamentos y productos veterinarios</li>
+          </ul>
+          <p class="mt-3"><strong>Coordina la entrega contactándonos por Instagram o WhatsApp</strong></p>
+        </div>
+
+        <!-- Sección de Contacto para Donaciones Materiales -->
+        <div class="info-card mt-4" style="background-color: #e8f5e9; border-left: 4px solid #4caf50;">
+          <h4><i class="fas fa-phone-alt" style="color: #4caf50;"></i> Contáctanos para Donaciones Materiales</h4>
+          <p>Si deseas donar insumos, alimentos o cualquier material, comunícate con nosotros para coordinar la entrega:</p>
+          <div class="d-flex flex-wrap gap-3 mt-3">
+            <a href="https://www.instagram.com/rescatandoando_stgo" target="_blank" rel="noopener noreferrer" class="btn btn-primary" style="background-color: #e4405f; border: none;">
+              <i class="fab fa-instagram"></i> Instagram
+            </a>
+            <a href="https://wa.me/56912345678?text=Hola,%20me%20gustaría%20hacer%20una%20donación%20material%20🐾" target="_blank" rel="noopener noreferrer" class="btn btn-success">
+              <i class="fab fa-whatsapp"></i> WhatsApp
+            </a>
+          </div>
+        </div>
+
+        <!-- SECCIÓN DE TRANSPARENCIA -->
+        <hr class="my-5" style="border-top: 3px solid #009688;">
+        
+        <div class="section-icon">
+          <i class="fas fa-file-invoice-dollar"></i>
+        </div>
+        <h2 class="section-title">Transparencia en Nuestras Finanzas 📊</h2>
+        
+        <div class="info-card" style="background-color: #e3f2fd;">
+          <h4><i class="fas fa-info-circle" style="color: #1976d2;"></i> Nuestro Compromiso</h4>
+          <p>En RescatandoAndo creemos en la transparencia total. Cada peso donado es usado responsablemente para el bienestar de nuestros rescatados. Aquí puedes ver exactamente en qué se utilizan tus aportes.</p>
+        </div>
+
+        <div class="row mt-4">
+          <div class="col-md-6">
+            <div class="info-card" style="background-color: #fff3e0; border-left: 5px solid #ff9800;">
+              <h4><i class="fas fa-receipt" style="color: #ff9800;"></i> Comprobantes y Gastos</h4>
+              <p class="mb-3">Todas las donaciones y boletas de gastos en un solo lugar:</p>
+              <div class="d-grid gap-2">
+                <a href="{% url 'ver_comprobantes' %}" class="btn btn-outline-primary" target="_blank">
+                  <i class="fas fa-images"></i> Ver Comprobantes y Gastos
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="info-card" style="background-color: #f3e5f5; border-left: 5px solid #9c27b0;">
+              <h4><i class="fas fa-chart-pie" style="color: #9c27b0;"></i> Resumen de Gastos</h4>
+              <p class="mb-3">Distribución de gastos del último mes:</p>
+              <div class="mb-3">
+                <div class="d-flex justify-content-between mb-2">
+                  <span><i class="fas fa-hospital" style="color: #f44336;"></i> Veterinaria</span>
+                  <strong>45%</strong>
+                </div>
+                <div class="progress mb-3" style="height: 20px;">
+                  <div class="progress-bar" style="width: 45%; background-color: #f44336;"></div>
+                </div>
+
+                <div class="d-flex justify-content-between mb-2">
+                  <span><i class="fas fa-drumstick-bite" style="color: #ff9800;"></i> Alimentos</span>
+                  <strong>30%</strong>
+                </div>
+                <div class="progress mb-3" style="height: 20px;">
+                  <div class="progress-bar" style="width: 30%; background-color: #ff9800;"></div>
+                </div>
+
+                <div class="d-flex justify-content-between mb-2">
+                  <span><i class="fas fa-home" style="color: #4caf50;"></i> Refugio</span>
+                  <strong>15%</strong>
+                </div>
+                <div class="progress mb-3" style="height: 20px;">
+                  <div class="progress-bar" style="width: 15%; background-color: #4caf50;"></div>
+                </div>
+
+                <div class="d-flex justify-content-between mb-2">
+                  <span><i class="fas fa-box" style="color: #2196f3;"></i> Suministros</span>
+                  <strong>10%</strong>
+                </div>
+                <div class="progress" style="height: 20px;">
+                  <div class="progress-bar" style="width: 10%; background-color: #2196f3;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-card mt-4" style="background-color: #e1f5fe;">
+          <h4><i class="fas fa-hands-helping" style="color: #0288d1;"></i> ¡Gracias por tu Apoyo!</h4>
+          <p class="text-center">Cada donación, grande o pequeña, hace la diferencia en la vida de nuestros rescatados. Tu generosidad nos permite seguir salvando vidas. 🐾💕</p>
+          <div class="table-responsive">
+            <table class="table table-striped table-hover">
+              <thead style="background-color: #009688; color: white;">
+                <tr>
+                  <th>Categoría</th>
+                  <th>Concepto</th>
+                  <th>Monto</th>
+                  <th>Fecha</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><i class="fas fa-hospital" style="color: #f44336;"></i> Veterinaria</td>
+                  <td>Esterilización - Luna y Max</td>
+                  <td>$85.000</td>
+                  <td>15/11/2025</td>
+                </tr>
+                <tr>
+                  <td><i class="fas fa-drumstick-bite" style="color: #ff9800;"></i> Alimentos</td>
+                  <td>Alimento premium perros (20kg)</td>
+                  <td>$45.000</td>
+                  <td>10/11/2025</td>
+                </tr>
+                <tr>
+                  <td><i class="fas fa-hospital" style="color: #f44336;"></i> Veterinaria</td>
+                  <td>Vacunas - 5 cachorros</td>
+                  <td>$62.000</td>
+                  <td>08/11/2025</td>
+                </tr>
+                <tr>
+                  <td><i class="fas fa-drumstick-bite" style="color: #ff9800;"></i> Alimentos</td>
+                  <td>Alimento para gatos (15kg)</td>
+                  <td>$38.000</td>
+                  <td>05/11/2025</td>
+                </tr>
+                <tr>
+                  <td><i class="fas fa-box" style="color: #2196f3;"></i> Suministros</td>
+                  <td>Mantas y camas</td>
+                  <td>$25.000</td>
+                  <td>03/11/2025</td>
+                </tr>
+                <tr style="background-color: #fff3e0; font-weight: bold;">
+                  <td colspan="2"><strong>TOTAL NOVIEMBRE</strong></td>
+                  <td><strong>$255.000</strong></td>
+                  <td></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p class="text-muted mt-3"><small><i class="fas fa-sync-alt"></i> Actualizado mensualmente. Última actualización: 16/11/2025</small></p>
+        </div>
+
+        <div class="highlight-box mt-4">
+          <h5><i class="fas fa-heart" style="color: #e91e63;"></i> Gracias por Confiar en Nosotros</h5>
+          <p>Tu confianza es fundamental para nuestro trabajo. Cada donación es un acto de amor que se convierte en atención veterinaria, alimento y refugio para quienes más lo necesitan.</p>
+          <p class="mb-0"><strong>¿Tienes dudas sobre los gastos?</strong> Contáctanos y con gusto te explicaremos cualquier detalle.</p>
+        </div>
+
+        <div class="text-center mt-4">
+          <a href="https://www.instagram.com/rescatandoando_stgo" target="_blank" class="btn btn-action me-2">
+            <i class="fab fa-instagram"></i> Síguenos en Instagram
+          </a>
+          <a href="https://wa.me/56912345678?text=Hola,%20tengo%20preguntas%20sobre%20la%20transparencia%20financiera" target="_blank" class="btn btn-secondary-action">
+            <i class="fab fa-whatsapp"></i> Consultas por WhatsApp
+          </a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Botón volver al inicio -->
+    <div class="back-home">
+      <a href="index.html"><i class="fas fa-home"></i> Volver al Inicio</a>
+    </div>
+  </div>
+
+  <!-- Botón flotante de WhatsApp -->
+  <a href="https://wa.me/56912345678?text=Hola,%20me%20interesa%20ayudar%20a%20RescatandoAndo%20🐾" class="whatsapp-float" target="_blank" rel="noopener noreferrer" aria-label="Contactar por WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+  </a>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <script>
+    // Función para manejar la subida del comprobante
+    function handleComprobanteUpload(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const fileName = file.name;
+        const fileSize = (file.size / 1024 / 1024).toFixed(2); // Tamaño en MB
+        
+        // Aquí podrías enviar el archivo al servidor
+        console.log('Archivo seleccionado:', {
+          nombre: fileName,
+          tamaño: fileSize + ' MB',
+          tipo: file.type
+        });
+        
+        alert(`✅ ¡Gracias por tu donación!\n\nComprobante "${fileName}" (${fileSize} MB) recibido.\n\nLo procesaremos y te contactaremos pronto para agradecerte personalmente. 🐾💕`);
+        
+        // Limpiar el input para permitir seleccionar el mismo archivo otra vez si es necesario
+        input.value = '';
+      }
+    }
+  </script>
+
+  <!-- Modal: Formulario Voluntariado -->
+  <div class="modal fade" id="modalVoluntariado" tabindex="-1" aria-labelledby="modalVoluntariadoLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header" style="background: linear-gradient(135deg, #00bfa5, #00897b); color: white;">
+          <h5 class="modal-title" id="modalVoluntariadoLabel">
+            <i class="fas fa-hands-helping"></i> Formulario de Voluntariado
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="POST" action="{% url 'solicitar_voluntariado' %}">
+          {% csrf_token %}
+          <div class="modal-body">
+            <div class="mb-3">
+              <label for="nombre_completo" class="form-label">Nombre Completo *</label>
+              <input type="text" class="form-control" id="nombre_completo" name="nombre_completo" 
+                     value="{{ usuario_nombre_completo|default:'' }}" required>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="email" class="form-label">Email *</label>
+                <input type="email" class="form-control" id="email" name="email" 
+                       value="{{ usuario_email|default:'' }}" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="telefono" class="form-label">Teléfono *</label>
+                <input type="tel" class="form-control" id="telefono" name="telefono" 
+                       value="{{ usuario_telefono|default:'' }}" required>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="direccion" class="form-label">Dirección *</label>
+              <input type="text" class="form-control" id="direccion" name="direccion" required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="instagram" class="form-label">Instagram (opcional)</label>
+              <input type="text" class="form-control" id="instagram" name="instagram" placeholder="@usuario">
+            </div>
+            
+            <div class="mb-3">
+              <label for="equipo" class="form-label">¿En qué equipo te gustaría participar? *</label>
+              <select class="form-select" id="equipo" name="equipo" required>
+                <option value="">Selecciona un equipo...</option>
+                <option value="veterinaria">Veterinaria</option>
+                <option value="peluqueria">Peluquería</option>
+                <option value="rescatistas">Rescatistas</option>
+                <option value="diseno">Diseño</option>
+                <option value="tallerista">Tallerista</option>
+                <option value="hogar_temporal">Hogar Temporal</option>
+              </select>
+            </div>
+            
+            <div class="mb-3">
+              <label for="experiencia_previa" class="form-label">¿Tienes experiencia previa con animales o en voluntariado? *</label>
+              <textarea class="form-control" id="experiencia_previa" name="experiencia_previa" rows="3" required></textarea>
+            </div>
+            
+            <div class="mb-3">
+              <label for="motivacion" class="form-label">¿Por qué quieres ser voluntario en Rescatando? *</label>
+              <textarea class="form-control" id="motivacion" name="motivacion" rows="3" required></textarea>
+            </div>
+            
+            <div class="mb-3">
+              <label for="informacion_adicional" class="form-label">Información adicional (opcional)</label>
+              <textarea class="form-control" id="informacion_adicional" name="informacion_adicional" rows="2" placeholder="Cuéntanos cualquier otra cosa que consideres importante..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn" style="background: linear-gradient(135deg, #00bfa5, #00897b); color: white;">
+              <i class="fas fa-paper-plane"></i> Enviar Solicitud
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Formulario Hogar Temporal -->
+  <div class="modal fade" id="modalHogarTemporal" tabindex="-1" aria-labelledby="modalHogarTemporalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header" style="background: linear-gradient(135deg, #ff6f00, #ff8f00); color: white;">
+          <h5 class="modal-title" id="modalHogarTemporalLabel">
+            <i class="fas fa-home"></i> Formulario Hogar Temporal
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <form method="POST" action="{% url 'solicitar_voluntariado' %}">
+          {% csrf_token %}
+          <input type="hidden" name="equipo" value="hogar_temporal">
+          <div class="modal-body">
+            <div class="alert alert-info">
+              <i class="fas fa-info-circle"></i> Los hogares temporales acogen animales mientras encuentran su familia definitiva. ¡Es fundamental para su recuperación y socialización!
+            </div>
+            
+            <div class="mb-3">
+              <label for="nombre_completo_ht" class="form-label">Nombre Completo *</label>
+              <input type="text" class="form-control" id="nombre_completo_ht" name="nombre_completo" 
+                     value="{{ usuario_nombre_completo|default:'' }}" required>
+            </div>
+            
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label for="email_ht" class="form-label">Email *</label>
+                <input type="email" class="form-control" id="email_ht" name="email" 
+                       value="{{ usuario_email|default:'' }}" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label for="telefono_ht" class="form-label">Teléfono *</label>
+                <input type="tel" class="form-control" id="telefono_ht" name="telefono" 
+                       value="{{ usuario_telefono|default:'' }}" required>
+              </div>
+            </div>
+            
+            <div class="mb-3">
+              <label for="direccion_ht" class="form-label">Dirección *</label>
+              <input type="text" class="form-control" id="direccion_ht" name="direccion" required>
+            </div>
+            
+            <div class="mb-3">
+              <label for="instagram_ht" class="form-label">Instagram (opcional)</label>
+              <input type="text" class="form-control" id="instagram_ht" name="instagram" placeholder="@usuario">
+            </div>
+            
+            <div class="mb-3">
+              <label for="experiencia_previa_ht" class="form-label">¿Has sido hogar temporal antes? Cuéntanos tu experiencia *</label>
+              <textarea class="form-control" id="experiencia_previa_ht" name="experiencia_previa" rows="3" required></textarea>
+            </div>
+            
+            <div class="mb-3">
+              <label for="motivacion_ht" class="form-label">¿Por qué quieres ser hogar temporal? *</label>
+              <textarea class="form-control" id="motivacion_ht" name="motivacion" rows="3" required></textarea>
+            </div>
+            
+            <div class="mb-3">
+              <label for="informacion_adicional_ht" class="form-label">Información adicional (opcional)</label>
+              <textarea class="form-control" id="informacion_adicional_ht" name="informacion_adicional" rows="2" placeholder="Ej: Tipo de vivienda, espacio disponible, otros animales en casa, disponibilidad de tiempo..."></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn" style="background: linear-gradient(135deg, #ff6f00, #ff8f00); color: white;">
+              <i class="fas fa-paper-plane"></i> Enviar Solicitud
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Auto-desvanecer mensajes después de 4 segundos
+    document.addEventListener('DOMContentLoaded', function() {
+      const alerts = document.querySelectorAll('.alert');
+      alerts.forEach(function(alert) {
+        setTimeout(function() {
+          const bsAlert = new bootstrap.Alert(alert);
+          bsAlert.close();
+        }, 4000);
+      });
+    });
+  </script>
+
+</body>
+</html>
+

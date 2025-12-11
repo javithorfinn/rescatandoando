@@ -1,0 +1,569 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gestionar Animales - Rescatando🐶🐱</title>
+  <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Chewy', cursive;
+      background-image: url('/media/animales/fondo.jpg');
+      background-size: 120px;
+      background-repeat: repeat;
+      min-height: 100vh;
+    }
+    .navbar { background-color: #009688; }
+    .navbar .nav-link, .navbar-brand { color: #ffffff !important; }
+    .container-main {
+      max-width: 1400px;
+      margin: 3rem auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+    .page-header {
+      text-align: center;
+      color: #009688;
+      margin-bottom: 2rem;
+    }
+    .animal-card {
+      background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+      border-radius: 15px;
+      padding: 1.25rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      border: 2px solid transparent;
+    }
+    .animal-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 12px 25px rgba(0, 150, 136, 0.3);
+      border-color: #009688;
+    }
+    .card-img-container {
+      width: 100%;
+      height: 220px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #fff;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+      position: relative;
+    }
+    .card-img-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .card-img-container .no-image {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #e0e0e0 0%, #bdbdbd 100%);
+      color: #666;
+    }
+    .animal-card h5 {
+      color: #009688;
+      font-size: 1.4rem;
+      margin: 0.75rem 0 0.5rem 0;
+      font-weight: bold;
+      text-align: center;
+    }
+    .animal-card p {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: #333;
+      margin-bottom: 1rem;
+      flex-grow: 1;
+    }
+    .animal-card .badge {
+      font-size: 0.85rem;
+      padding: 0.3rem 0.6rem;
+    }
+    .animal-card .btn {
+      font-size: 0.85rem;
+      font-weight: bold;
+      padding: 0.5rem 0.75rem;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .animal-card .btn:hover {
+      transform: scale(1.05);
+    }
+    
+    @media (max-width: 768px) {
+      .container-main {
+        margin: 1rem;
+        padding: 1rem;
+      }
+      .animal-card {
+        padding: 1rem;
+      }
+      .animal-card h5 {
+        font-size: 1.2rem;
+      }
+      .animal-card p {
+        font-size: 0.85rem;
+      }
+    }
+    
+    @media (min-width: 1200px) {
+      .row.g-4 {
+        row-gap: 2rem !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'index' %}">RescatandoAndo🦴🐾</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-main">
+    <div class="page-header">
+      <h1><i class="fas fa-dog"></i> Gestionar Animales</h1>
+      <button class="btn btn-success mt-3" data-bs-toggle="modal" data-bs-target="#modalAgregar">
+        <i class="fas fa-plus"></i> Agregar Nuevo Animal
+      </button>
+    </div>
+
+    {% if messages %}
+      {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+      {% endfor %}
+    {% endif %}
+
+    <div class="row g-4">
+      {% for animal in animales %}
+      <div class="col-12 col-sm-6 col-lg-4 col-xl-3">
+        <div class="animal-card">
+          <div class="card-img-container mb-3">
+            {% if animal.foto %}
+            <img src="{{ animal.foto.url }}" alt="{{ animal.nombre }}">
+            {% else %}
+            <div class="no-image">
+              <i class="fas fa-paw fa-3x"></i>
+              <p class="mt-2 mb-0">Sin foto</p>
+            </div>
+            {% endif %}
+          </div>
+          
+          <h5>{{ animal.nombre }}</h5>
+          
+          <div class="mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span><strong>Especie:</strong></span>
+              <span>{{ animal.especie }}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span><strong>Edad:</strong></span>
+              <span>{{ animal.edad }} año{{ animal.edad|pluralize }}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span><strong>Sexo:</strong></span>
+              <span>{{ animal.sexo }}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center mb-1">
+              <span><strong>Salud:</strong></span>
+              <span class="text-truncate" style="max-width: 120px;" title="{{ animal.estado_salud }}">{{ animal.estado_salud }}</span>
+            </div>
+            <div class="d-flex justify-content-between align-items-center">
+              <span><strong>Disponible:</strong></span>
+              {% if animal.disponible %}
+                <span class="badge bg-success">Sí</span>
+              {% else %}
+                <span class="badge bg-secondary">No</span>
+              {% endif %}
+            </div>
+          </div>
+          
+          <div class="d-flex gap-2 mt-auto">
+            <button class="btn btn-warning btn-sm flex-fill" onclick="editarAnimal({{ animal.id }}, '{{ animal.nombre }}', '{{ animal.especie }}', {{ animal.edad }}, '{{ animal.sexo }}', '{{ animal.estado_salud }}', '{{ animal.descripcion|escapejs }}', {{ animal.disponible|lower }})" title="Editar animal">
+              <i class="fas fa-edit"></i>
+            </button>
+            <button class="btn btn-info btn-sm flex-fill" onclick="editarFicha({{ animal.id }})" title="Editar ficha médica">
+              <i class="fas fa-notes-medical"></i>
+            </button>
+            <button class="btn btn-danger btn-sm flex-fill" onclick="confirmarEliminar({{ animal.id }}, '{{ animal.nombre }}')" title="Eliminar animal">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      {% empty %}
+      <div class="col-12">
+        <div class="alert alert-info text-center">
+          <i class="fas fa-info-circle"></i> No hay animales registrados aún.
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Modal Agregar/Editar -->
+  <div class="modal fade" id="modalAgregar" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="modal-header" style="background-color: #009688; color: white;">
+            <h5 class="modal-title"><i class="fas fa-plus-circle"></i> Agregar Nuevo Animal</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Nombre:</label>
+                <input type="text" class="form-control" name="nombre" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Especie:</label>
+                <select class="form-select" name="especie" required>
+                  <option value="">Seleccionar...</option>
+                  <option value="perro">Perro</option>
+                  <option value="gato">Gato</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Raza:</label>
+                <input type="text" class="form-control" name="raza" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Edad (años):</label>
+                <input type="number" class="form-control" name="edad" min="0" step="0.1" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Sexo:</label>
+                <select class="form-select" name="sexo" required>
+                  <option value="">Seleccionar...</option>
+                  <option value="macho">Macho</option>
+                  <option value="hembra">Hembra</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Estado:</label>
+                <select class="form-select" name="estado" required>
+                  <option value="">Seleccionar...</option>
+                  <option value="disponible">Disponible</option>
+                  <option value="en_proceso">En Proceso</option>
+                  <option value="adoptado">Adoptado</option>
+                </select>
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Descripción:</label>
+                <textarea class="form-control" name="descripcion" rows="3"></textarea>
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Foto:</label>
+                <input type="file" class="form-control" name="foto" accept="image/*">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Hogar Temporal:</label>
+                <select class="form-select" name="id_hogar">
+                  <option value="">Ninguno</option>
+                  {% for hogar in hogares %}
+                  <option value="{{ hogar.id_hogar }}">{{ hogar.direccion }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              
+              <!-- Sección Ficha Médica -->
+              <div class="col-12 mt-4">
+                <h6 class="text-primary"><i class="fas fa-notes-medical"></i> Ficha Médica</h6>
+                <hr>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="esterilizado" id="esterilizado">
+                  <label class="form-check-label" for="esterilizado">Esterilizado</label>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Fecha Esterilización:</label>
+                <input type="date" class="form-control" name="fecha_esterilizacion">
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="vacunas_al_dia" id="vacunas_al_dia" checked>
+                  <label class="form-check-label" for="vacunas_al_dia">Vacunas al Día</label>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Última Vacunación:</label>
+                <input type="text" class="form-control" name="ultima_vacunacion" placeholder="Ej: 20/09/2024 (Triple Felina)">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Último Control:</label>
+                <input type="date" class="form-control" name="ultimo_control">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Próximo Control:</label>
+                <input type="date" class="form-control" name="proximo_control">
+              </div>
+              <div class="col-md-12 mb-3">
+                <label class="form-label">Estado de Salud (Ficha):</label>
+                <input type="text" class="form-control" name="estado_salud_ficha" value="Por evaluar">
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Observaciones Médicas:</label>
+                <textarea class="form-control" name="observaciones" rows="2" placeholder="Animal recién ingresado"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-success" name="accion" value="agregar">
+              <i class="fas fa-save"></i> Guardar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Eliminar -->
+  <div class="modal fade" id="modalEliminar" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form method="POST">
+          {% csrf_token %}
+          <div class="modal-header bg-danger text-white">
+            <h5 class="modal-title"><i class="fas fa-exclamation-triangle"></i> Confirmar Eliminación</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <p>¿Está seguro de eliminar al animal <strong id="nombreEliminar"></strong>?</p>
+            <input type="hidden" name="id_animal" id="idEliminar">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger" name="accion" value="eliminar">
+              <i class="fas fa-trash"></i> Eliminar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Editar -->
+  <div class="modal fade" id="modalEditar" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <form method="POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="modal-header bg-warning">
+            <h5 class="modal-title"><i class="fas fa-edit"></i> Editar Animal</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" name="id_animal" id="editId">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Nombre:</label>
+                <input type="text" class="form-control" name="nombre" id="editNombre" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Especie:</label>
+                <input type="text" class="form-control" name="especie" id="editEspecie" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Edad:</label>
+                <input type="number" class="form-control" name="edad" id="editEdad" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Sexo:</label>
+                <select class="form-select" name="sexo" id="editSexo" required>
+                  <option value="Macho">Macho</option>
+                  <option value="Hembra">Hembra</option>
+                </select>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Estado de Salud:</label>
+                <input type="text" class="form-control" name="estado_salud" id="editEstadoSalud">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Disponible:</label>
+                <select class="form-select" name="disponible" id="editDisponible">
+                  <option value="true">Sí</option>
+                  <option value="false">No</option>
+                </select>
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Descripción:</label>
+                <textarea class="form-control" name="descripcion" id="editDescripcion" rows="3"></textarea>
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Nueva Foto (opcional):</label>
+                <input type="file" class="form-control" name="foto" accept="image/*">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Hogar Temporal:</label>
+                <select class="form-select" name="id_hogar" id="editHogarTemporal">
+                  <option value="">Ninguno</option>
+                  {% for hogar in hogares %}
+                  <option value="{{ hogar.id_hogar }}">{{ hogar.direccion }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-warning" name="accion" value="editar">
+              <i class="fas fa-save"></i> Actualizar
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Editar Ficha Médica -->
+  <div class="modal fade" id="modalFichaMedica" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <form method="POST">
+          {% csrf_token %}
+          <div class="modal-header bg-info text-white">
+            <h5 class="modal-title"><i class="fas fa-notes-medical"></i> Editar Ficha Médica</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" name="id_animal" id="fichaAnimalId">
+            <div class="row">
+              <div class="col-12 mb-3">
+                <h6 class="text-primary"><i class="fas fa-syringe"></i> Vacunación y Esterilización</h6>
+                <hr>
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="esterilizado" id="fichaEsterilizado">
+                  <label class="form-check-label" for="fichaEsterilizado">Esterilizado</label>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Fecha Esterilización:</label>
+                <input type="date" class="form-control" name="fecha_esterilizacion" id="fichaFechaEsterilizacion">
+              </div>
+              <div class="col-md-6 mb-3">
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" name="vacunas_al_dia" id="fichaVacunas">
+                  <label class="form-check-label" for="fichaVacunas">Vacunas al Día</label>
+                </div>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Última Vacunación:</label>
+                <input type="text" class="form-control" name="ultima_vacunacion" id="fichaUltimaVacunacion" placeholder="Ej: 20/09/2024 (Triple Felina)">
+              </div>
+              
+              <div class="col-12 mt-3 mb-3">
+                <h6 class="text-primary"><i class="fas fa-stethoscope"></i> Control Veterinario</h6>
+                <hr>
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Último Control:</label>
+                <input type="date" class="form-control" name="ultimo_control" id="fichaUltimoControl">
+              </div>
+              <div class="col-md-6 mb-3">
+                <label class="form-label">Próximo Control:</label>
+                <input type="date" class="form-control" name="proximo_control" id="fichaProximoControl">
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Estado de Salud:</label>
+                <input type="text" class="form-control" name="estado_salud_ficha" id="fichaEstadoSalud">
+              </div>
+              <div class="col-12 mb-3">
+                <label class="form-label">Observaciones Médicas:</label>
+                <textarea class="form-control" name="observaciones" id="fichaObservaciones" rows="4"></textarea>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-info" name="accion" value="editar_ficha">
+              <i class="fas fa-save"></i> Guardar Ficha
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function confirmarEliminar(id, nombre) {
+      document.getElementById('idEliminar').value = id;
+      document.getElementById('nombreEliminar').textContent = nombre;
+      new bootstrap.Modal(document.getElementById('modalEliminar')).show();
+    }
+
+    function editarAnimal(id, nombre, especie, edad, sexo, estadoSalud, descripcion, disponible) {
+      document.getElementById('editId').value = id;
+      document.getElementById('editNombre').value = nombre;
+      document.getElementById('editEspecie').value = especie;
+      document.getElementById('editEdad').value = edad;
+      document.getElementById('editSexo').value = sexo;
+      document.getElementById('editEstadoSalud').value = estadoSalud;
+      document.getElementById('editDescripcion').value = descripcion;
+      document.getElementById('editDisponible').value = disponible ? 'true' : 'false';
+      new bootstrap.Modal(document.getElementById('modalEditar')).show();
+    }
+
+    function editarFicha(idAnimal) {
+      // Cargar ficha médica del animal
+      fetch(`/api/ficha/${idAnimal}/`)
+        .then(response => response.json())
+        .then(data => {
+          document.getElementById('fichaAnimalId').value = idAnimal;
+          document.getElementById('fichaEsterilizado').checked = data.esterilizado;
+          document.getElementById('fichaFechaEsterilizacion').value = data.fecha_esterilizacion || '';
+          document.getElementById('fichaVacunas').checked = data.vacunas_al_dia;
+          document.getElementById('fichaUltimaVacunacion').value = data.ultima_vacunacion || '';
+          document.getElementById('fichaUltimoControl').value = data.ultimo_control || '';
+          document.getElementById('fichaProximoControl').value = data.proximo_control || '';
+          document.getElementById('fichaEstadoSalud').value = data.estado_salud || '';
+          document.getElementById('fichaObservaciones').value = data.observaciones || '';
+          new bootstrap.Modal(document.getElementById('modalFichaMedica')).show();
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Error al cargar la ficha médica');
+        });
+    }
+
+    // Auto-desvanecer mensajes después de 4 segundos
+    document.addEventListener('DOMContentLoaded', function() {
+      const alerts = document.querySelectorAll('.alert');
+      alerts.forEach(function(alert) {
+        setTimeout(function() {
+          const bsAlert = new bootstrap.Alert(alert);
+          bsAlert.close();
+        }, 4000);
+      });
+    });
+  </script>
+</body>
+</html>

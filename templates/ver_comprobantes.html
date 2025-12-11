@@ -1,0 +1,311 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Comprobantes y Gastos - Rescatando🐶🐱</title>
+  <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Chewy', cursive;
+      margin: 0;
+      padding: 0;
+      background-image: url('/media/animales/fondo.jpg');
+      background-size: 120px;
+      background-repeat: repeat;
+      min-height: 100vh;
+      font-size: 1.15rem;
+    }
+    .navbar { 
+      background-color: #009688;
+      position: relative;
+      z-index: 10;
+      padding: 1rem 0;
+    }
+    .navbar .nav-link, .navbar-brand { 
+      color: #ffffff !important;
+      font-size: 1.3rem;
+    }
+    .logo-img {
+      height: 55px;
+      width: 55px;
+      margin-right: 10px;
+      vertical-align: middle;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .container-main {
+      max-width: 1200px;
+      margin: 3rem auto;
+      background: rgba(255, 255, 255, 0.98);
+      border-radius: 30px;
+      padding: 3rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+    .page-header {
+      text-align: center;
+      color: #009688;
+      margin-bottom: 3rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 4px solid #009688;
+    }
+    .page-header h1 {
+      font-size: 3.5rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+    }
+    .carousel-item {
+      height: 600px;
+      background: #f5f5f5;
+      border-radius: 20px;
+      overflow: hidden;
+    }
+    .carousel-item img {
+      height: 100%;
+      width: 100%;
+      object-fit: contain;
+      padding: 20px;
+    }
+    .carousel-caption {
+      background: rgba(0, 150, 136, 0.9);
+      border-radius: 15px;
+      padding: 1rem 2rem;
+      bottom: 30px;
+    }
+    .carousel-caption h5 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    .carousel-control-prev-icon,
+    .carousel-control-next-icon {
+      background-color: #009688;
+      border-radius: 50%;
+      padding: 2rem;
+    }
+    .info-badge {
+      background: linear-gradient(135deg, #4caf50, #2e7d32);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 20px;
+      text-align: center;
+      margin-bottom: 2rem;
+      font-size: 1.3rem;
+      box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);
+    }
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: #e0f7fa;
+      border-radius: 20px;
+      margin: 2rem 0;
+    }
+    .empty-state i {
+      font-size: 5rem;
+      color: #00acc1;
+      margin-bottom: 1rem;
+    }
+    .thumbnail-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      margin-top: 2rem;
+    }
+    .thumbnail {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 10px;
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: all 0.3s;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    .thumbnail:hover,
+    .thumbnail.active {
+      border-color: #009688;
+      transform: scale(1.1);
+    }
+    .btn-donar {
+      background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+      color: white;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-size: 1.3rem;
+      border-radius: 50px;
+      box-shadow: 0 8px 20px rgba(238, 90, 111, 0.4);
+      transition: all 0.3s;
+    }
+    .btn-donar:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(238, 90, 111, 0.6);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'index' %}">
+        <img src="/media/animales/logo.jpg" alt="Logo RescatandoAndo" class="logo-img">
+        RescatandoAndo 🐾
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{% url 'index' %}"><i class="fas fa-home"></i> Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'ayudar' %}"><i class="fas fa-arrow-left"></i> Volver</a></li>
+          
+          {% if request.session.usuario_id %}
+            <!-- Usuario autenticado -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {% if request.session.usuario_avatar %}
+                  <span style="font-size: 30px; margin-right: 5px;">
+                    {% if request.session.usuario_avatar == 'perro' %}🐕
+                    {% elif request.session.usuario_avatar == 'gato' %}🐱
+                    {% elif request.session.usuario_avatar == 'pajaro' %}🦜
+                    {% elif request.session.usuario_avatar == 'chanchito' %}🐷
+                    {% elif request.session.usuario_avatar == 'rata' %}🐭
+                    {% elif request.session.usuario_avatar == 'caballo' %}🐴
+                    {% elif request.session.usuario_avatar == 'conejo' %}🐰
+                    {% elif request.session.usuario_avatar == 'tortuga' %}🐢
+                    {% elif request.session.usuario_avatar == 'vaca' %}🐮
+                    {% elif request.session.usuario_avatar == 'dinosaurio' %}🦖
+                    {% else %}🐕{% endif %}
+                  </span>
+                {% else %}
+                  <i class="fas fa-user-circle"></i>
+                {% endif %}
+                {{ request.session.usuario_nombre }}
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li><a class="dropdown-item" href="{% url 'perfil' %}"><i class="fas fa-user"></i> Mi Perfil</a></li>
+                {% if request.session.usuario_rol == 'admin' or request.session.usuario_rol == 'voluntario' %}
+                  <li><a class="dropdown-item" href="{% url 'gestionar_animales' %}"><i class="fas fa-plus"></i> Gestionar Animales</a></li>
+                  <li><a class="dropdown-item" href="{% url 'ver_solicitudes' %}"><i class="fas fa-tasks"></i> Ver Solicitudes</a></li>
+                {% endif %}
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+              </ul>
+            </li>
+          {% else %}
+            <!-- Usuario NO autenticado -->
+            <li class="nav-item"><a class="nav-link" href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Iniciar Sesión</a></li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-main">
+    <div class="page-header">
+      <h1><i class="fas fa-receipt"></i> Comprobantes y Gastos</h1>
+      <p class="lead text-muted">Transparencia en cada aporte 💕</p>
+    </div>
+
+    <div class="info-badge">
+      <i class="fas fa-heart"></i> Total de donaciones registradas: <strong>{{ donaciones.count }}</strong>
+    </div>
+
+    {% if donaciones %}
+      <div id="carouselComprobantes" class="carousel slide mb-4" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+          {% for donacion in donaciones %}
+          <button type="button" data-bs-target="#carouselComprobantes" data-bs-slide-to="{{ forloop.counter0 }}" 
+                  {% if forloop.first %}class="active"{% endif %} aria-current="true"></button>
+          {% endfor %}
+        </div>
+        
+        <div class="carousel-inner">
+          {% for donacion in donaciones %}
+          <div class="carousel-item {% if forloop.first %}active{% endif %}">
+            {% if donacion.comprobante %}
+              <img src="{{ donacion.comprobante.url }}" class="d-block w-100" alt="Comprobante {{ forloop.counter }}">
+            {% endif %}
+            <div class="carousel-caption">
+              <h5><i class="fas fa-calendar-alt"></i> {{ donacion.fecha|date:"d/m/Y" }}</h5>
+              {% if donacion.id_usuario %}
+                <p><i class="fas fa-user"></i> Donado por: @{{ donacion.id_usuario.cuenta }}</p>
+              {% else %}
+                <p><i class="fas fa-user-secret"></i> Donante Anónimo</p>
+              {% endif %}
+              {% if donacion.comentario %}
+                <p><i class="fas fa-comment"></i> "{{ donacion.comentario }}"</p>
+              {% endif %}
+              {% if donacion.monto %}
+                <p><i class="fas fa-dollar-sign"></i> Monto: ${{ donacion.monto|floatformat:0 }}</p>
+              {% endif %}
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselComprobantes" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Anterior</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselComprobantes" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Siguiente</span>
+        </button>
+      </div>
+
+      <!-- Miniaturas -->
+      <div class="thumbnail-container">
+        {% for donacion in donaciones %}
+          {% if donacion.comprobante %}
+          <img src="{{ donacion.comprobante.url }}" class="thumbnail" 
+               data-bs-target="#carouselComprobantes" data-bs-slide-to="{{ forloop.counter0 }}"
+               alt="Miniatura {{ forloop.counter }}">
+          {% endif %}
+        {% endfor %}
+      </div>
+
+    {% else %}
+      <div class="empty-state">
+        <i class="fas fa-file-upload"></i>
+        <h3>Aún no hay comprobantes registrados</h3>
+        <p class="text-muted">Sé el primero en donar y aparece aquí</p>
+      </div>
+    {% endif %}
+
+    <div class="text-center mt-5">
+      <a href="{% url 'realizar_donacion' %}" class="btn btn-donar">
+        <i class="fas fa-hand-holding-heart"></i> Realizar Donación
+      </a>
+    </div>
+
+    <div class="text-center mt-4">
+      <p class="text-muted">
+        <i class="fas fa-shield-alt"></i> Todos los comprobantes son verificados y auditados mensualmente
+      </p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Activar miniatura correspondiente al slide activo
+    const carousel = document.getElementById('carouselComprobantes');
+    const thumbnails = document.querySelectorAll('.thumbnail');
+    
+    if (carousel) {
+      carousel.addEventListener('slide.bs.carousel', function (e) {
+        thumbnails.forEach(thumb => thumb.classList.remove('active'));
+        if (thumbnails[e.to]) {
+          thumbnails[e.to].classList.add('active');
+        }
+      });
+      
+      // Activar primera miniatura
+      if (thumbnails[0]) {
+        thumbnails[0].classList.add('active');
+      }
+    }
+  </script>
+</body>
+</html>

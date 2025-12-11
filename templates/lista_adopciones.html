@@ -1,0 +1,933 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Solicitudes - Rescatando🐶🐱</title>
+  <link href="https://fonts.googleapis.com/css2?family=Chewy&display=swap" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Chewy', cursive;
+      background-image: url('/media/animales/fondo.jpg');
+      background-size: 120px;
+      background-repeat: repeat;
+      min-height: 100vh;
+    }
+    .navbar { background-color: #009688; }
+    .navbar .nav-link, .navbar-brand { color: #ffffff !important; }
+    .container-main {
+      max-width: 1400px;
+      margin: 3rem auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+    }
+    .page-header {
+      text-align: center;
+      color: #009688;
+      margin-bottom: 2rem;
+    }
+    .nav-tabs .nav-link {
+      color: #009688;
+      font-size: 1.1rem;
+    }
+    .nav-tabs .nav-link.active {
+      background-color: #009688;
+      color: white;
+    }
+    .solicitud-card {
+      background: #e0f7fa;
+      border-radius: 15px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'index' %}">RescatandoAndo🦴🐾</a>
+      <div class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="{% url 'index' %}">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-main">
+    <div class="page-header">
+      <h1><i class="fas fa-clipboard-list"></i> Ver Solicitudes</h1>
+    </div>
+
+    <ul class="nav nav-tabs mb-4" role="tablist">
+      <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="tab" href="#adopciones">
+          <i class="fas fa-heart"></i> Adopciones
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#voluntarios">
+          <i class="fas fa-hands-helping"></i> Voluntarios ({{ total_solicitudes_voluntariado }})
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#donaciones">
+          <i class="fas fa-donate"></i> Donaciones ({{ donaciones|length }})
+        </a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <!-- TAB ADOPCIONES -->
+      <div class="tab-pane fade show active" id="adopciones">
+        <h4 class="mb-4"><i class="fas fa-heart"></i> Solicitudes de Adopción</h4>
+        
+        <!-- Sub-tabs para estados de adopción -->
+        <ul class="nav nav-pills mb-3" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#adop-pendientes">
+              <i class="fas fa-clock"></i> Pendientes ({{ adopciones_pendientes|length }})
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#adop-entrevistas">
+              <i class="fas fa-video"></i> Entrevistas ({{ adopciones_entrevista|length }})
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#adop-aprobadas">
+              <i class="fas fa-thumbs-up"></i> Aprobadas ({{ adopciones_aprobadas|length }})
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#adop-proceso">
+              <i class="fas fa-file-contract"></i> Con Contrato ({{ adopciones_proceso|length }})
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#adop-rechazadas">
+              <i class="fas fa-times-circle"></i> Rechazadas ({{ adopciones_rechazadas|length }})
+            </a>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+          <!-- Solicitudes Pendientes -->
+          <div class="tab-pane fade show active" id="adop-pendientes">
+        {% for adopcion in adopciones_pendientes %}
+        <div class="solicitud-card">
+          <div class="row align-items-center">
+            <div class="col-md-2 text-center">
+              {% if adopcion.id_animal.foto %}
+              <img src="{{ adopcion.id_animal.foto.url }}" class="img-fluid rounded" style="max-height: 100px;" alt="{{ adopcion.id_animal.nombre }}">
+              {% endif %}
+            </div>
+            <div class="col-md-6">
+              <h5><i class="fas fa-paw"></i> {{ adopcion.id_animal.nombre }}</h5>
+              <p><strong>Solicitante:</strong> {{ adopcion.id_adoptante.nombre }}
+              {% if adopcion.id_adoptante.id_usuario %}
+                <span class="badge bg-info">
+                  <i class="fas fa-user"></i> @{{ adopcion.id_adoptante.id_usuario.cuenta }}
+                </span>
+              {% endif %}<br>
+              <strong>Email:</strong> {{ adopcion.id_adoptante.email }}<br>
+              <strong>Teléfono:</strong> {{ adopcion.id_adoptante.telefono }}<br>
+              <strong>Fecha solicitud:</strong> {{ adopcion.fecha_solicitud|date:"d/m/Y" }}</p>
+            </div>
+            <div class="col-md-4 text-end">
+              <span class="badge bg-warning mb-2" style="font-size: 1rem;">Pendiente</span><br>
+              <button class="btn btn-info btn-sm mb-1 w-100" data-bs-toggle="modal" data-bs-target="#modalDetalle{{ adopcion.id }}">
+                <i class="fas fa-eye"></i> Ver Detalles
+              </button>
+              <button class="btn btn-primary btn-sm mb-1 w-100" data-bs-toggle="modal" data-bs-target="#modalAgendar{{ adopcion.id }}">
+                <i class="fas fa-calendar-plus"></i> Agendar Entrevista
+              </button>
+              <form method="POST" class="d-inline" onsubmit="return confirm('¿Eliminar esta solicitud?');">
+                {% csrf_token %}
+                <input type="hidden" name="id_solicitud" value="{{ adopcion.id }}">
+                <button type="submit" name="accion" value="eliminar_solicitud" class="btn btn-danger btn-sm w-100">
+                  <i class="fas fa-trash"></i> Eliminar
+                </button>
+              </form>
+              </button>
+              <button type="button" class="btn btn-danger btn-sm w-100" data-bs-toggle="modal" data-bs-target="#modalRechazar{{ adopcion.id }}">
+                <i class="fas fa-times"></i> Rechazar
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Modal Ver Detalles Completos -->
+        <div class="modal fade" id="modalDetalle{{ adopcion.id }}" tabindex="-1">
+          <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+              <div class="modal-header" style="background: linear-gradient(135deg, #42C4B1, #00897b); color: white;">
+                <h5 class="modal-title"><i class="fas fa-clipboard-list"></i> Detalle Completo de Solicitud - {{ adopcion.id_animal.nombre }}</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+              </div>
+              <div class="modal-body" style="max-height: 70vh; overflow-y: auto;">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h6 class="text-primary"><i class="fas fa-user"></i> Datos Personales</h6>
+                    <table class="table table-sm">
+                      <tr><td><strong>Nombre:</strong></td><td>{{ adopcion.id_adoptante.nombre }}</td></tr>
+                      <tr><td><strong>Email:</strong></td><td>{{ adopcion.id_adoptante.email }}</td></tr>
+                      <tr><td><strong>Teléfono:</strong></td><td>{{ adopcion.id_adoptante.telefono }}</td></tr>
+                      <tr><td><strong>RUT:</strong></td><td>{{ adopcion.id_adoptante.rut|default:"No proporcionado" }}</td></tr>
+                      <tr><td><strong>Edad:</strong></td><td>{{ adopcion.id_adoptante.edad }} años</td></tr>
+                      <tr><td><strong>Ciudad:</strong></td><td>{{ adopcion.id_adoptante.ciudad }}</td></tr>
+                      <tr><td><strong>Comuna:</strong></td><td>{{ adopcion.id_adoptante.comuna }}</td></tr>
+                      <tr><td><strong>Dirección:</strong></td><td>{{ adopcion.id_adoptante.direccion }}</td></tr>
+                      <tr><td><strong>Extranjero:</strong></td><td>{% if adopcion.id_adoptante.es_extranjero %}Sí{% else %}No{% endif %}</td></tr>
+                      {% if adopcion.id_adoptante.es_extranjero %}
+                      <tr><td><strong>Residencia Definitiva:</strong></td><td>{% if adopcion.id_adoptante.tiene_residencia_definitiva %}Sí{% else %}No{% endif %}</td></tr>
+                      {% endif %}
+                    </table>
+                    
+                    <h6 class="text-primary mt-3"><i class="fas fa-id-card"></i> Documentación</h6>
+                    <div class="row">
+                      {% if adopcion.id_adoptante.foto_carnet_frontal %}
+                      <div class="col-6">
+                        <p class="mb-1"><strong>Carnet Frontal:</strong></p>
+                        <a href="{{ adopcion.id_adoptante.foto_carnet_frontal.url }}" target="_blank">
+                          <img src="{{ adopcion.id_adoptante.foto_carnet_frontal.url }}" class="img-thumbnail" style="max-height: 150px;" alt="Carnet Frontal">
+                        </a>
+                      </div>
+                      {% endif %}
+                      {% if adopcion.id_adoptante.foto_carnet_trasera %}
+                      <div class="col-6">
+                        <p class="mb-1"><strong>Carnet Trasera:</strong></p>
+                        <a href="{{ adopcion.id_adoptante.foto_carnet_trasera.url }}" target="_blank">
+                          <img src="{{ adopcion.id_adoptante.foto_carnet_trasera.url }}" class="img-thumbnail" style="max-height: 150px;" alt="Carnet Trasera">
+                        </a>
+                      </div>
+                      {% endif %}
+                      {% if not adopcion.id_adoptante.foto_carnet_frontal and not adopcion.id_adoptante.foto_carnet_trasera %}
+                      <div class="col-12">
+                        <p class="text-muted">No se proporcionaron fotos del carnet</p>
+                      </div>
+                      {% endif %}
+                    </div>
+                    
+                    <h6 class="text-primary mt-3"><i class="fas fa-home"></i> Vivienda</h6>
+                    <table class="table table-sm">
+                      <tr><td><strong>Tipo:</strong></td><td>{{ adopcion.id_adoptante.tipo_vivienda }}</td></tr>
+                      <tr><td><strong>Mallas de protección:</strong></td><td>{% if adopcion.id_adoptante.tiene_mallas_proteccion %}Sí{% else %}No{% endif %}</td></tr>
+                      <tr><td><strong>Permiten mascotas:</strong></td><td>{% if adopcion.id_adoptante.permiten_mascotas %}Sí{% else %}No{% endif %}</td></tr>
+                      <tr><td><strong>Recursos económicos:</strong></td><td>{% if adopcion.id_adoptante.tiene_recursos_economicos %}Sí{% else %}No{% endif %}</td></tr>
+                    </table>
+                  </div>
+                  
+                  <div class="col-md-6">
+                    <h6 class="text-primary"><i class="fas fa-users"></i> Información Familiar</h6>
+                    <table class="table table-sm">
+                      <tr><td><strong>Miembros familia:</strong></td><td>{{ adopcion.id_adoptante.miembros_familia }}</td></tr>
+                      <tr><td><strong>Decisión compartida:</strong></td><td>{% if adopcion.id_adoptante.decision_compartida %}Sí{% else %}No{% endif %}</td></tr>
+                      <tr><td><strong>Alérgico:</strong></td><td>{% if adopcion.id_adoptante.es_alergico %}Sí{% else %}No{% endif %}</td></tr>
+                      {% if adopcion.id_adoptante.es_alergico %}
+                      <tr><td><strong>Medidas alergia:</strong></td><td>{{ adopcion.id_adoptante.medidas_alergia }}</td></tr>
+                      {% endif %}
+                    </table>
+                    
+                    <h6 class="text-primary mt-3"><i class="fas fa-paw"></i> Experiencia con Mascotas</h6>
+                    <table class="table table-sm">
+                      <tr><td><strong>Tiene/tuvo mascotas:</strong></td><td>{% if adopcion.id_adoptante.tiene_o_tuvo_mascotas %}Sí{% else %}No{% endif %}</td></tr>
+                      {% if adopcion.id_adoptante.tiene_o_tuvo_mascotas %}
+                      <tr><td><strong>Esterilizadas/Vacunadas:</strong></td><td>{{ adopcion.id_adoptante.mascotas_esterilizadas_vacunadas }}</td></tr>
+                      {% endif %}
+                      <tr><td><strong>Alimento:</strong></td><td>{{ adopcion.id_adoptante.alimento_mascotas }}</td></tr>
+                    </table>
+                    
+                    <h6 class="text-primary mt-3"><i class="fas fa-heart"></i> Motivación</h6>
+                    <div class="alert alert-light">
+                      <strong>¿Por qué adoptar?</strong><br>
+                      {{ adopcion.id_adoptante.por_que_adoptar }}
+                    </div>
+                    <div class="alert alert-light">
+                      <strong>¿Qué pasa en caso de mudanza?</strong><br>
+                      {{ adopcion.id_adoptante.que_pasa_si_mudanza }}
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="row mt-3">
+                  <div class="col-12">
+                    <h6 class="text-primary"><i class="fas fa-check-circle"></i> Compromisos Aceptados</h6>
+                    <ul>
+                      <li>✓ Acepta videollamada: {% if adopcion.id_adoptante.acepta_videollamada %}Sí{% else %}No{% endif %}</li>
+                      <li>✓ Acepta tenencia INDOOR: {% if adopcion.id_adoptante.acepta_tenencia_indoor %}Sí{% else %}No{% endif %}</li>
+                      <li>✓ Acepta seguimiento: {% if adopcion.id_adoptante.acepta_seguimiento %}Sí{% else %}No{% endif %}</li>
+                      <li>✓ Acepta enviar fotos: {% if adopcion.id_adoptante.acepta_enviar_fotos %}Sí{% else %}No{% endif %}</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Modal Agendar Entrevista -->
+        <div class="modal fade" id="modalAgendar{{ adopcion.id }}" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title">Agendar Entrevista - {{ adopcion.id_animal.nombre }}</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+              </div>
+              <form method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                  <input type="hidden" name="id_adopcion" value="{{ adopcion.id }}">
+                  <div class="mb-3">
+                    <label class="form-label">Fecha y Hora</label>
+                    <input type="datetime-local" name="fecha_entrevista" class="form-control" required>
+                  </div>
+                  <div class="mb-3">
+                    <label class="form-label">Link Zoom</label>
+                    <input type="url" name="link_zoom" class="form-control" placeholder="https://zoom.us/j/...">
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="submit" name="accion" value="agendar_entrevista" class="btn btn-primary">Agendar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Modal Rechazar -->
+        <div class="modal fade" id="modalRechazar{{ adopcion.id }}" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Rechazar Solicitud</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+              </div>
+              <form method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                  <input type="hidden" name="id_adopcion" value="{{ adopcion.id }}">
+                  <div class="mb-3">
+                    <label class="form-label">Motivo del rechazo</label>
+                    <textarea name="motivo_rechazo" class="form-control" rows="3" required></textarea>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="submit" name="accion" value="rechazar_adopcion" class="btn btn-danger">Rechazar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="alert alert-info text-center">
+          <i class="fas fa-info-circle"></i> No hay solicitudes pendientes.
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Entrevistas -->
+      <div class="tab-pane fade" id="adop-entrevistas">
+        {% for adopcion in adopciones_entrevista %}
+        <div class="solicitud-card">
+          <div class="row align-items-center">
+            <div class="col-md-2 text-center">
+              {% if adopcion.id_animal.foto %}
+              <img src="{{ adopcion.id_animal.foto.url }}" class="img-fluid rounded" style="max-height: 100px;">
+              {% endif %}
+            </div>
+            <div class="col-md-5">
+              <h5><i class="fas fa-paw"></i> {{ adopcion.id_animal.nombre }}</h5>
+              <p><strong>Solicitante:</strong> {{ adopcion.id_adoptante.nombre }}<br>
+              <strong>Teléfono:</strong> {{ adopcion.id_adoptante.telefono }}<br>
+              {% if adopcion.fecha_entrevista %}
+              <strong>Entrevista:</strong> {{ adopcion.fecha_entrevista|date:"d/m/Y" }}<br>
+              {% endif %}
+              </p>
+            </div>
+            <div class="col-md-3">
+              {% if adopcion.estado == 'entrevista_agendada' %}
+                <span class="badge bg-info" style="font-size: 1rem;">Entrevista Agendada</span>
+              {% elif adopcion.estado == 'entrevista_realizada' %}
+                <span class="badge bg-primary" style="font-size: 1rem;">Entrevista Realizada</span>
+              {% endif %}
+            </div>
+            <div class="col-md-2 text-center">
+              {% if adopcion.estado == 'entrevista_agendada' or adopcion.estado == 'entrevista_realizada' %}
+                <form method="POST" class="d-inline">
+                  {% csrf_token %}
+                  <input type="hidden" name="id_adopcion" value="{{ adopcion.id }}">
+                  <button type="submit" name="accion" value="aprobar_adopcion" class="btn btn-success btn-sm mb-1 w-100">
+                    <i class="fas fa-thumbs-up"></i> Aprobar
+                  </button>
+                  <button type="button" class="btn btn-danger btn-sm mb-1 w-100" data-bs-toggle="modal" data-bs-target="#modalRechazar{{ adopcion.id }}">
+                    <i class="fas fa-thumbs-down"></i> Rechazar
+                  </button>
+                </form>
+                <form method="POST" onsubmit="return confirm('¿Eliminar esta solicitud?');">
+                  {% csrf_token %}
+                  <input type="hidden" name="id_solicitud" value="{{ adopcion.id }}">
+                  <button type="submit" name="accion" value="eliminar_solicitud" class="btn btn-secondary btn-sm w-100">
+                    <i class="fas fa-trash"></i> Eliminar
+                  </button>
+                </form>
+                </form>
+                </form>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        
+        <!-- Modal Rechazar -->
+        <div class="modal fade" id="modalRechazar{{ adopcion.id }}" tabindex="-1">
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Rechazar Adopción</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+              </div>
+              <form method="POST">
+                {% csrf_token %}
+                <div class="modal-body">
+                  <input type="hidden" name="id_adopcion" value="{{ adopcion.id }}">
+                  <div class="mb-3">
+                    <label class="form-label">Motivo del rechazo</label>
+                    <textarea name="motivo_rechazo" class="form-control" rows="3" required></textarea>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  <button type="submit" name="accion" value="rechazar_adopcion" class="btn btn-danger">Rechazar</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="alert alert-info text-center">
+          <i class="fas fa-info-circle"></i> No hay entrevistas pendientes.
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Aprobadas (Solicitudes aprobadas - Animal ya no disponible) -->
+      <div class="tab-pane fade" id="adop-aprobadas">
+        {% for solicitud in adopciones_aprobadas %}
+        <div class="solicitud-card">
+          <div class="row align-items-center">
+            <div class="col-md-2 text-center">
+              {% if solicitud.id_animal.foto %}
+              <img src="{{ solicitud.id_animal.foto.url }}" class="img-fluid rounded" style="max-height: 100px;">
+              {% endif %}
+            </div>
+            <div class="col-md-6">
+              <h5><i class="fas fa-paw"></i> {{ solicitud.id_animal.nombre }}</h5>
+              <p><strong>Adoptante:</strong> {{ solicitud.id_adoptante.nombre }}
+              {% if solicitud.id_adoptante.id_usuario %}
+                <span class="badge bg-info">
+                  <i class="fas fa-user"></i> @{{ solicitud.id_adoptante.id_usuario.cuenta }}
+                </span>
+              {% endif %}<br>
+              <strong>Email:</strong> {{ solicitud.id_adoptante.email }}<br>
+              <strong>Teléfono:</strong> {{ solicitud.id_adoptante.telefono }}<br>
+              <strong>Fecha aprobación:</strong> {{ solicitud.fecha_aprobacion|date:"d/m/Y" }}</p>
+            </div>
+            <div class="col-md-4 text-center">
+              <span class="badge bg-success mb-2" style="font-size: 1rem;">✅ Aprobada</span><br>
+              <p class="text-success mb-2"><i class="fas fa-ban"></i> Animal no disponible</p>
+              <p class="text-muted small">Contrato generado automáticamente</p>
+              <form method="POST" onsubmit="return confirm('¿Eliminar esta solicitud aprobada?');" class="mt-2">
+                {% csrf_token %}
+                <input type="hidden" name="id_solicitud" value="{{ solicitud.id }}">
+                <button type="submit" name="accion" value="eliminar_solicitud" class="btn btn-danger btn-sm w-50">
+                  <i class="fas fa-trash"></i> Eliminar
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="alert alert-info text-center">
+          <i class="fas fa-info-circle"></i> No hay solicitudes aprobadas.
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Con Contrato (Adopciones con contrato generado) -->
+      <div class="tab-pane fade" id="adop-proceso">
+        {% for adopcion in adopciones_proceso %}
+        <div class="solicitud-card">
+          <div class="row align-items-center">
+            <div class="col-md-2 text-center">
+              {% if adopcion.id_animal.foto %}
+              <img src="{{ adopcion.id_animal.foto.url }}" class="img-fluid rounded" style="max-height: 100px;">
+              {% endif %}
+            </div>
+            <div class="col-md-5">
+              <h5><i class="fas fa-paw"></i> {{ adopcion.id_animal.nombre }}</h5>
+              <p><strong>Adoptante:</strong> {{ adopcion.id_adoptante.nombre }}<br>
+              <strong>Email:</strong> {{ adopcion.id_adoptante.email }}<br>
+              <strong>Fecha aprobación:</strong> {{ adopcion.fecha_aprobacion|date:"d/m/Y" }}<br>
+              {% if adopcion.fecha_contrato %}
+              <strong>Contrato:</strong> {{ adopcion.fecha_contrato|date:"d/m/Y" }}
+              {% endif %}
+              </p>
+            </div>
+            <div class="col-md-3">
+              {% if adopcion.estado == 'aprobada' %}
+                <span class="badge bg-success" style="font-size: 1rem;">Aprobada</span>
+              {% elif adopcion.estado == 'contrato_generado' %}
+                <span class="badge bg-primary" style="font-size: 1rem;">Contrato Generado</span>
+              {% endif %}
+            </div>
+            <div class="col-md-2 text-center">
+              {% if adopcion.estado == 'aprobada' %}
+                <form method="POST">
+                  {% csrf_token %}
+                  <input type="hidden" name="id_adopcion" value="{{ adopcion.id }}">
+                  <button type="submit" name="accion" value="generar_contrato" class="btn btn-primary btn-sm">
+                    <i class="fas fa-file-contract"></i> Generar Contrato
+                  </button>
+                </form>
+              {% elif adopcion.estado == 'contrato_generado' %}
+                {% with contrato=adopcion.contrato_set.first %}
+                  {% if contrato and contrato.archivo_pdf %}
+                    <a href="{{ contrato.archivo_pdf.url }}" target="_blank" class="btn btn-info btn-sm mb-1 w-100">
+                      <i class="fas fa-file-pdf"></i> Ver Contrato
+                    </a>
+                  {% endif %}
+                {% endwith %}
+              {% endif %}
+              <form method="POST" onsubmit="return confirm('¿Eliminar esta adopción y su contrato?');" class="mt-1">
+                {% csrf_token %}
+                <input type="hidden" name="id_adopcion" value="{{ adopcion.id }}">
+                <button type="submit" name="accion" value="eliminar_adopcion" class="btn btn-danger btn-sm w-100">
+                  <i class="fas fa-trash"></i> Eliminar
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="alert alert-info text-center">
+          <i class="fas fa-info-circle"></i> No hay adopciones en proceso.
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Rechazadas -->
+      <div class="tab-pane fade" id="adop-rechazadas">
+        {% for adopcion in adopciones_rechazadas %}
+        <div class="solicitud-card" style="background: #ffebee;">
+          <div class="row align-items-center">
+            <div class="col-md-2 text-center">
+              {% if adopcion.id_animal.foto %}
+              <img src="{{ adopcion.id_animal.foto.url }}" class="img-fluid rounded" style="max-height: 100px;">
+              {% endif %}
+            </div>
+            <div class="col-md-6">
+              <h5><i class="fas fa-paw"></i> {{ adopcion.id_animal.nombre }}</h5>
+              <p><strong>Solicitante:</strong> {{ adopcion.id_adoptante.nombre }}<br>
+              <strong>Fecha solicitud:</strong> {{ adopcion.fecha_solicitud }}<br>
+              <strong>Motivo rechazo:</strong> {{ adopcion.motivo_rechazo|default:"No especificado" }}</p>
+            </div>
+            <div class="col-md-2">
+              <span class="badge bg-danger" style="font-size: 1rem;">Rechazada</span>
+            </div>
+            <div class="col-md-2 text-center">
+              <form method="POST" onsubmit="return confirm('¿Eliminar esta solicitud rechazada?');">
+                {% csrf_token %}
+                <input type="hidden" name="id_solicitud" value="{{ adopcion.id }}">
+                <button type="submit" name="accion" value="eliminar_solicitud" class="btn btn-danger btn-sm w-100">
+                  <i class="fas fa-trash"></i> Eliminar
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="alert alert-info text-center">
+          <i class="fas fa-info-circle"></i> No hay adopciones rechazadas.
+        </div>
+        {% endfor %}
+      </div>
+        </div>
+      </div>
+
+      <!-- TAB VOLUNTARIOS -->
+      <div class="tab-pane fade" id="voluntarios">
+        <h4 class="mb-4"><i class="fas fa-hands-helping"></i> Solicitudes de Voluntariado</h4>
+        
+        <!-- Sub-tabs para estados de voluntariado -->
+        <ul class="nav nav-pills mb-3" role="tablist">
+          <li class="nav-item">
+            <a class="nav-link active" data-bs-toggle="tab" href="#vol-pendientes">
+              <i class="fas fa-clock"></i> Pendientes ({{ voluntariado_pendientes.count }})
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#vol-entrevista">
+              <i class="fas fa-video"></i> Entrevistas ({{ voluntariado_entrevista.count }})
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#vol-aprobadas">
+              <i class="fas fa-check-circle"></i> Aprobadas ({{ voluntariado_aprobadas.count }})
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-bs-toggle="tab" href="#vol-rechazadas">
+              <i class="fas fa-times-circle"></i> Rechazadas ({{ voluntariado_rechazadas.count }})
+            </a>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+          <!-- Pendientes -->
+          <div class="tab-pane fade show active" id="vol-pendientes">
+            {% for solicitud in voluntariado_pendientes %}
+            <div class="solicitud-card">
+              <div class="row">
+                <div class="col-md-8">
+                  <h5><i class="fas fa-user"></i> {{ solicitud.nombre_completo }}
+                  {% if solicitud.usuario_solicitante %}
+                    <span class="badge bg-info">
+                      <i class="fas fa-user-circle"></i> @{{ solicitud.usuario_solicitante.cuenta }}
+                    </span>
+                  {% endif %}
+                  </h5>
+                  <p><strong>Email:</strong> {{ solicitud.email }}<br>
+                  <strong>Teléfono:</strong> {{ solicitud.telefono }}<br>
+                  <strong>Equipo:</strong> <span class="badge bg-info">{{ solicitud.get_equipo_display }}</span><br>
+                  <strong>Fecha solicitud:</strong> {{ solicitud.fecha_solicitud|date:"d/m/Y" }}</p>
+                </div>
+                <div class="col-md-4 text-end">
+                  <span class="badge bg-warning mb-2" style="font-size: 1rem;">Pendiente</span><br>
+                  <button type="button" class="btn btn-info btn-sm mb-1 w-100" data-bs-toggle="modal" data-bs-target="#detalleVoluntariadoModal{{ solicitud.id }}">
+                    <i class="fas fa-eye"></i> Ver Detalles
+                  </button>
+                  <button type="button" class="btn btn-success btn-sm mb-1 w-100" data-bs-toggle="modal" data-bs-target="#agendarVoluntariadoModal{{ solicitud.id }}">
+                    <i class="fas fa-calendar-plus"></i> Agendar Entrevista
+                  </button>
+                  <button type="button" class="btn btn-danger btn-sm w-100" data-bs-toggle="modal" data-bs-target="#rechazarVoluntariadoModal{{ solicitud.id }}">
+                    <i class="fas fa-times"></i> Rechazar
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal Ver Detalles Completos -->
+            <div class="modal fade" id="detalleVoluntariadoModal{{ solicitud.id }}" tabindex="-1">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header" style="background: linear-gradient(135deg, #4caf50, #388e3c); color: white;">
+                    <h5 class="modal-title"><i class="fas fa-clipboard-list"></i> Detalle Completo - Solicitud de Voluntariado</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="row">
+                      <div class="col-md-6">
+                        <h6 class="text-success"><i class="fas fa-user"></i> Datos Personales</h6>
+                        <table class="table table-sm">
+                          <tr><td><strong>Nombre:</strong></td><td>{{ solicitud.nombre_completo }}</td></tr>
+                          <tr><td><strong>Email:</strong></td><td>{{ solicitud.email }}</td></tr>
+                          <tr><td><strong>Teléfono:</strong></td><td>{{ solicitud.telefono }}</td></tr>
+                          <tr><td><strong>Dirección:</strong></td><td>{{ solicitud.direccion }}</td></tr>
+                          {% if solicitud.instagram %}
+                          <tr><td><strong>Instagram:</strong></td><td>{{ solicitud.instagram }}</td></tr>
+                          {% endif %}
+                        </table>
+                      </div>
+                      
+                      <div class="col-md-6">
+                        <h6 class="text-success"><i class="fas fa-hands-helping"></i> Información del Voluntariado</h6>
+                        <table class="table table-sm">
+                          <tr><td><strong>Equipo:</strong></td><td><span class="badge bg-info">{{ solicitud.get_equipo_display }}</span></td></tr>
+                          <tr><td><strong>Fecha solicitud:</strong></td><td>{{ solicitud.fecha_solicitud|date:"d/m/Y" }}</td></tr>
+                        </table>
+                        
+                        <div class="alert alert-light mt-3">
+                          <strong><i class="fas fa-briefcase"></i> Experiencia Previa:</strong><br>
+                          {{ solicitud.experiencia_previa }}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div class="row mt-3">
+                      <div class="col-12">
+                        <div class="alert alert-success">
+                          <strong><i class="fas fa-heart"></i> Motivación:</strong><br>
+                          {{ solicitud.motivacion }}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {% if solicitud.informacion_adicional %}
+                    <div class="row">
+                      <div class="col-12">
+                        <div class="alert alert-info">
+                          <strong><i class="fas fa-info-circle"></i> Información Adicional:</strong><br>
+                          {{ solicitud.informacion_adicional }}
+                        </div>
+                      </div>
+                    </div>
+                    {% endif %}
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal Agendar Entrevista -->
+            <div class="modal fade" id="agendarVoluntariadoModal{{ solicitud.id }}" tabindex="-1">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Agendar Entrevista - {{ solicitud.nombre_completo }}</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                  </div>
+                  <form method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                      <input type="hidden" name="id_solicitud" value="{{ solicitud.id }}">
+                      <div class="mb-3">
+                        <label class="form-label">Fecha y Hora de Entrevista</label>
+                        <input type="datetime-local" class="form-control" name="fecha_entrevista" required>
+                      </div>
+                      <div class="mb-3">
+                        <label class="form-label">Link de Zoom</label>
+                        <input type="url" class="form-control" name="link_zoom" placeholder="https://zoom.us/j/...">
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                      <button type="submit" name="accion" value="agendar_entrevista_voluntariado" class="btn btn-success">
+                        <i class="fas fa-check"></i> Agendar
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal Rechazar -->
+            <div class="modal fade" id="rechazarVoluntariadoModal{{ solicitud.id }}" tabindex="-1">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Rechazar Solicitud - {{ solicitud.nombre_completo }}</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                  </div>
+                  <form method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                      <input type="hidden" name="id_solicitud" value="{{ solicitud.id }}">
+                      <div class="mb-3">
+                        <label class="form-label">Motivo del rechazo</label>
+                        <textarea class="form-control" name="observaciones_admin" rows="3" required></textarea>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                      <button type="submit" name="accion" value="rechazar_voluntariado" class="btn btn-danger">
+                        <i class="fas fa-times"></i> Rechazar
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            {% empty %}
+            <div class="alert alert-info text-center">
+              <i class="fas fa-info-circle"></i> No hay solicitudes pendientes.
+            </div>
+            {% endfor %}
+          </div>
+
+          <!-- Entrevistas Agendadas -->
+          <div class="tab-pane fade" id="vol-entrevista">
+            {% for solicitud in voluntariado_entrevista %}
+            <div class="solicitud-card">
+              <div class="row">
+                <div class="col-md-8">
+                  <h5><i class="fas fa-user"></i> {{ solicitud.nombre_completo }}</h5>
+                  <p><strong>Email:</strong> {{ solicitud.email }}<br>
+                  <strong>Teléfono:</strong> {{ solicitud.telefono }}<br>
+                  <strong>Equipo:</strong> <span class="badge bg-info">{{ solicitud.get_equipo_display }}</span><br>
+                  <strong>Entrevista:</strong> {{ solicitud.fecha_entrevista|date:"d/m/Y" }}<br>
+                  {% if solicitud.link_zoom %}<strong>Zoom:</strong> <a href="{{ solicitud.link_zoom }}" target="_blank">{{ solicitud.link_zoom }}</a>{% endif %}</p>
+                </div>
+                <div class="col-md-4 text-end">
+                  <button type="button" class="btn btn-success btn-sm mb-2" data-bs-toggle="modal" data-bs-target="#aprobarVoluntariadoModal{{ solicitud.id }}">
+                    <i class="fas fa-check"></i> Aprobar
+                  </button>
+                  <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#rechazarVolModal{{ solicitud.id }}">
+                    <i class="fas fa-times"></i> Rechazar
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal Aprobar -->
+            <div class="modal fade" id="aprobarVoluntariadoModal{{ solicitud.id }}" tabindex="-1">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header bg-success text-white">
+                    <h5 class="modal-title">Aprobar Solicitud - {{ solicitud.nombre_completo }}</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                  </div>
+                  <form method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                      <input type="hidden" name="id_solicitud" value="{{ solicitud.id }}">
+                      <div class="mb-3">
+                        <label class="form-label">Observaciones (opcional)</label>
+                        <textarea class="form-control" name="observaciones_admin" rows="2"></textarea>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                      <button type="submit" name="accion" value="aprobar_voluntariado" class="btn btn-success">
+                        <i class="fas fa-check"></i> Aprobar
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+            <!-- Modal Rechazar -->
+            <div class="modal fade" id="rechazarVolModal{{ solicitud.id }}" tabindex="-1">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title">Rechazar Solicitud - {{ solicitud.nombre_completo }}</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                  </div>
+                  <form method="POST">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                      <input type="hidden" name="id_solicitud" value="{{ solicitud.id }}">
+                      <div class="mb-3">
+                        <label class="form-label">Motivo del rechazo</label>
+                        <textarea class="form-control" name="observaciones_admin" rows="3" required></textarea>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                      <button type="submit" name="accion" value="rechazar_voluntariado" class="btn btn-danger">
+                        <i class="fas fa-times"></i> Rechazar
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+            {% empty %}
+            <div class="alert alert-info text-center">
+              <i class="fas fa-info-circle"></i> No hay entrevistas agendadas.
+            </div>
+            {% endfor %}
+          </div>
+
+          <!-- Aprobadas -->
+          <div class="tab-pane fade" id="vol-aprobadas">
+            {% for solicitud in voluntariado_aprobadas %}
+            <div class="solicitud-card" style="border-left: 4px solid #4caf50;">
+              <div class="row">
+                <div class="col-md-10">
+                  <h5><i class="fas fa-check-circle text-success"></i> {{ solicitud.nombre_completo }}</h5>
+                  <p><strong>Email:</strong> {{ solicitud.email }}<br>
+                  <strong>Teléfono:</strong> {{ solicitud.telefono }}<br>
+                  <strong>Equipo:</strong> <span class="badge bg-success">{{ solicitud.get_equipo_display }}</span><br>
+                  {% if solicitud.observaciones_admin %}<strong>Observaciones:</strong> {{ solicitud.observaciones_admin }}{% endif %}</p>
+                </div>
+                <div class="col-md-2 text-center">
+                  <span class="badge bg-success" style="font-size: 1rem;">Aprobada</span>
+                </div>
+              </div>
+            </div>
+            {% empty %}
+            <div class="alert alert-info text-center">
+              <i class="fas fa-info-circle"></i> No hay solicitudes aprobadas.
+            </div>
+            {% endfor %}
+          </div>
+
+          <!-- Rechazadas -->
+          <div class="tab-pane fade" id="vol-rechazadas">
+            {% for solicitud in voluntariado_rechazadas %}
+            <div class="solicitud-card" style="border-left: 4px solid #f44336;">
+              <div class="row">
+                <div class="col-md-10">
+                  <h5><i class="fas fa-times-circle text-danger"></i> {{ solicitud.nombre_completo }}</h5>
+                  <p><strong>Email:</strong> {{ solicitud.email }}<br>
+                  <strong>Equipo:</strong> <span class="badge bg-secondary">{{ solicitud.get_equipo_display }}</span><br>
+                  <strong>Motivo rechazo:</strong> {{ solicitud.observaciones_admin|default:"No especificado" }}</p>
+                </div>
+                <div class="col-md-2 text-center">
+                  <span class="badge bg-danger" style="font-size: 1rem;">Rechazada</span>
+                </div>
+              </div>
+            </div>
+            {% empty %}
+            <div class="alert alert-info text-center">
+              <i class="fas fa-info-circle"></i> No hay solicitudes rechazadas.
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+
+      <!-- Donaciones -->
+      <div class="tab-pane fade" id="donaciones">
+        {% for donacion in donaciones %}
+        <div class="solicitud-card">
+          <div class="row align-items-center">
+            <div class="col-md-6">
+              <h5><i class="fas fa-dollar-sign"></i> Donación de {{ donacion.id_usuario.nombre }}</h5>
+              <p><strong>Tipo:</strong> {{ donacion.tipo_donacion }}<br>
+              <strong>Monto:</strong> ${{ donacion.monto|floatformat:0 }}<br>
+              <strong>Fecha:</strong> {{ donacion.fecha }}<br>
+              <strong>Método de pago:</strong> {{ donacion.metodo_pago }}</p>
+            </div>
+            <div class="col-md-4">
+              {% if donacion.comprobante %}
+                <a href="{{ donacion.comprobante.url }}" target="_blank" class="btn btn-info btn-sm">
+                  <i class="fas fa-file-pdf"></i> Ver Comprobante
+                </a>
+              {% else %}
+                <p class="text-muted">Sin comprobante</p>
+              {% endif %}
+            </div>
+            <div class="col-md-2 text-center">
+              <span class="badge bg-success" style="font-size: 1rem;">Registrada</span>
+            </div>
+          </div>
+        </div>
+        {% empty %}
+        <div class="alert alert-info text-center">
+          <i class="fas fa-info-circle"></i> No hay donaciones registradas.
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
